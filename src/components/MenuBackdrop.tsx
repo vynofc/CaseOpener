@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function MenuBackdrop() {
-  const [src, setSrc] = useState("/assets/img/menu-bg.jpg");
+  const [src, setSrc] = useState("/assets/img/menu-bg.webp");
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden>

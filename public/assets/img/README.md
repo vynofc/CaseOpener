@@ -6,15 +6,12 @@ keine Code-Aenderung noetig.
 
 ## 1. Menue-Hintergrund
 
-**Datei:** `public/assets/img/menu-bg.jpg`
+**Datei:** `public/assets/img/menu-bg.webp`
 
-Gesucht: ein CS2-Hauptmenue-/Map-Panorama (z. B. Screenshot aus dem CS2
-Hauptmenue oder eine Map wie Mirage/Dust2 bei Sonnenuntergang).
-
-- Aufloesung: mindestens 1920x1080, ideal 2560x1440
-- Format: JPG (Qualitaet ~80)
-- Quelle: eigener Vollbild-Screenshot aus CS2 (kontrastarme, dunkle Szene
-  wirkt am besten, da das UI darueber liegt)
+**Status: vorhanden** — echtes CS2-Menue-Panorama liegt bereits als WebP vor.
+Zum Austauschen einfach die Datei ersetzen (mind. 1920x1080, ideal
+2560x1440; kontrastarme, dunkle Szene wirkt am besten, da das UI darueber
+liegt). Fehlt die Datei, faellt die App auf den SVG-Platzhalter zurueck.
 
 ## 2. Kisten-Bilder
 
