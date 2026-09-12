@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { CaseData, InventoryItem, formatMoney, rarityById } from "@/lib/types";
 import { playWin } from "@/lib/audio";
 import SkinImage from "./SkinImage";
@@ -25,6 +25,24 @@ export default function WinModal({
   useEffect(() => {
     playWin(item.skin.rarity);
   }, [item]);
+
+  const actionsRef = useRef({ onKeep, onSell, onOpenAgain, canOpenAgain });
+  useEffect(() => {
+    actionsRef.current = { onKeep, onSell, onOpenAgain, canOpenAgain };
+  }, [onKeep, onSell, onOpenAgain, canOpenAgain]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code === "Space") e.preventDefault();
+      if (e.repeat) return;
+      const key = e.key.toLowerCase();
+      if (key === "v") actionsRef.current.onSell();
+      else if (key === "b") actionsRef.current.onKeep();
+      else if (key === "r" && actionsRef.current.canOpenAgain) actionsRef.current.onOpenAgain();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
@@ -60,13 +78,13 @@ export default function WinModal({
               onClick={onSell}
               className="btn-primary px-3 py-2.5 text-xs"
             >
-              Sell (+{formatMoney(item.price)})
+              Sell (+{formatMoney(item.price)}) <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">V</kbd>
             </button>
             <button
               onClick={onKeep}
               className="rounded-sm bg-black/45 hover:bg-black/25 border border-white/10 active:scale-95 transition px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-white cursor-pointer"
             >
-              Keep
+              Keep <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">B</kbd>
             </button>
           </div>
           <button
@@ -74,7 +92,7 @@ export default function WinModal({
             disabled={!canOpenAgain}
             className="mt-2 w-full rounded-sm border border-cs-gold/50 bg-cs-gold/10 hover:bg-cs-gold/20 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-cs-gold cursor-pointer"
           >
-            Open again ({formatMoney(caseData.price)})
+            Open again ({formatMoney(caseData.price)}) <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">R</kbd>
           </button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CASES } from "@/lib/cases";
 import { CaseData, InventoryItem, formatMoney } from "@/lib/types";
 import { rollDrop } from "@/lib/game";
@@ -72,6 +72,27 @@ export default function Home() {
   const affordable = hydrated && canAfford(selected.price);
   const busy = phase === "spinning" || phase === "opening";
 
+  const openCaseRef = useRef(openCase);
+  useEffect(() => {
+    openCaseRef.current = openCase;
+  }, [openCase]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.repeat) return;
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest("input, textarea, select")) return;
+      if (e.code === "Space") {
+        if (target && target.closest("button, a[href]")) return;
+        e.preventDefault();
+      } else if (e.key.toLowerCase() === "r" && phase === "idle") {
+        openCaseRef.current();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [phase]);
+
   return (
     <div className="min-h-full flex flex-col">
       <MenuBackdrop />
@@ -128,7 +149,7 @@ export default function Home() {
                 disabled={phase !== "idle" || !affordable}
                 className="btn-primary relative px-10 py-3.5 text-sm"
               >
-                Open case · {formatMoney(selected.price)}
+                Open case · {formatMoney(selected.price)} <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">R</kbd>
               </button>
               {!affordable && phase === "idle" && hydrated && (
                 <p className="relative text-xs text-red-400 -mt-3">Not enough balance. Click &quot;Deposit&quot; above to add funds.</p>

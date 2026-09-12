@@ -23,6 +23,17 @@ export default function CaseIntro({ onDone }: { onDone: () => void }) {
     if (failed) onDoneRef.current();
   }, [failed]);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code === "Space" || e.key === "Escape") {
+        e.preventDefault();
+        onDoneRef.current();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   if (failed) return null;
 
   return (
@@ -38,7 +49,7 @@ export default function CaseIntro({ onDone }: { onDone: () => void }) {
         onClick={() => onDoneRef.current()}
         className="absolute bottom-6 right-6 rounded-sm border border-white/25 bg-cs-800/80 hover:bg-cs-700 px-4 py-2 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-200 transition cursor-pointer"
       >
-        Skip
+        Skip <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">Space</kbd>
       </button>
     </div>
   );
