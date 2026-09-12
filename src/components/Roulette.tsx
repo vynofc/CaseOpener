@@ -74,15 +74,15 @@ export default function Roulette({
   const winnerRarity = rarityById(winner.skin.rarity);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl border border-zinc-700/60 bg-[#0d1119] py-4">
+    <div className="relative w-full overflow-hidden rounded-sm border border-white/10 bg-cs-950/80 py-4">
       <div
         className={`absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 z-10 transition-all ${
-          settled ? "pointer-won" : "bg-amber-400/80"
+          settled ? "pointer-won" : "bg-cs-gold/90"
         }`}
         style={settled ? { background: winnerRarity.color, boxShadow: `0 0 18px 3px ${winnerRarity.color}` } : undefined}
       />
-      <div className="absolute left-1/2 -top-0.5 -translate-x-1/2 z-10 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-amber-400" />
-      <div className="absolute left-1/2 -bottom-0.5 -translate-x-1/2 z-10 w-0 h-0 border-x-8 border-x-transparent border-b-8 border-b-amber-400" />
+      <div className="absolute left-1/2 -top-0.5 -translate-x-1/2 z-10 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-cs-gold" />
+      <div className="absolute left-1/2 -bottom-0.5 -translate-x-1/2 z-10 w-0 h-0 border-x-8 border-x-transparent border-b-8 border-b-cs-gold" />
 
       <div ref={containerRef} className="w-full overflow-hidden">
         <div ref={trackRef} className="flex gap-2 px-2 will-change-transform" style={{ width: STRIP_LENGTH * CARD_FULL }}>
@@ -92,8 +92,8 @@ export default function Roulette({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#0d1119] to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#0d1119] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-cs-950 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-cs-950 to-transparent" />
     </div>
   );
 }

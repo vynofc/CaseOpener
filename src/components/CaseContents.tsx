@@ -7,9 +7,9 @@ export default function CaseContents({ caseData }: { caseData: CaseData }) {
   const sorted = [...caseData.skins].sort((a, b) => b.basePrice - a.basePrice);
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-[#12161f] p-4">
-      <h2 className="text-lg font-bold text-white mb-1">Mögliche Drops</h2>
-      <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3">
+    <section className="panel p-5">
+      <h2 className="panel-heading">Enthält einen der folgenden Gegenstände</h2>
+      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 mb-4">
         {RARITIES.filter((r) => caseData.skins.some((s) => s.rarity === r.id)).map((r) => (
           <span key={r.id} className="text-xs font-semibold" style={{ color: r.color }}>
             {r.name}: {r.odds}%
@@ -22,12 +22,13 @@ export default function CaseContents({ caseData }: { caseData: CaseData }) {
           return (
             <div
               key={skin.id}
-              className="relative rounded-lg border bg-[#0d1119] p-2 flex flex-col items-center"
+              className="relative rounded-sm border bg-cs-950/70 p-2 flex flex-col items-center transition hover:bg-cs-800/60"
               style={{ borderColor: rarity.color + "44" }}
               title={`${skin.weapon} | ${skin.name} · ~${formatMoney(skin.basePrice)}`}
             >
-              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-lg" style={{ background: rarity.color }} />
-              <SkinImage skin={skin} className="w-full h-12 object-contain mt-1" />
+              <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-sm" style={{ background: rarity.color }} />
+              <div className="item-plate absolute inset-x-1.5 top-3 bottom-9 rounded-sm" />
+              <SkinImage skin={skin} className="relative w-full h-12 object-contain mt-1" />
               <div className="text-[9px] text-zinc-500 truncate w-full text-center">{skin.weapon}</div>
               <div className="text-[10px] font-semibold text-zinc-200 truncate w-full text-center leading-tight">{skin.name}</div>
               <div className="text-[9px] font-bold" style={{ color: rarity.color }}>{formatMoney(skin.basePrice)}</div>

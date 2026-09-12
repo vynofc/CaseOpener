@@ -9,17 +9,17 @@ export default function Inventory() {
   const total = inventory.reduce((sum, i) => sum + i.price, 0);
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-[#12161f] p-4">
-      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-        <h2 className="text-lg font-bold text-white">
-          Inventar <span className="text-zinc-500 text-sm font-normal">({inventory.length})</span>
+    <section id="inventory" className="panel p-5 scroll-mt-20">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <h2 className="panel-heading">
+          Inventar <span className="text-zinc-600 normal-case tracking-normal">({inventory.length})</span>
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-sm text-emerald-400 font-semibold">{formatMoney(total)}</span>
           <button
             onClick={sellAll}
             disabled={inventory.length === 0}
-            className="rounded-lg bg-emerald-600/20 border border-emerald-600/50 text-emerald-300 hover:bg-emerald-600/30 disabled:opacity-40 disabled:cursor-not-allowed px-3 py-1.5 text-xs font-bold transition active:scale-95 cursor-pointer"
+            className="btn-primary px-3 py-1.5 text-[10px]"
           >
             Alles verkaufen
           </button>
@@ -34,10 +34,10 @@ export default function Inventory() {
             return (
               <div
                 key={item.uid}
-                className="group relative rounded-lg border bg-[#0d1119] p-2 flex flex-col"
+                className="group relative rounded-sm border bg-cs-950/70 p-2 flex flex-col transition hover:bg-cs-800/60"
                 style={{ borderColor: rarity.color + "55" }}
               >
-                <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-lg" style={{ background: rarity.color }} />
+                <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-sm" style={{ background: rarity.color }} />
                 {item.stattrak && (
                   <span className="absolute top-1.5 left-1.5 text-[9px] font-bold text-orange-400">ST™</span>
                 )}
@@ -49,7 +49,7 @@ export default function Inventory() {
                   <span className="text-xs font-bold" style={{ color: rarity.color }}>{formatMoney(item.price)}</span>
                   <button
                     onClick={() => sellItem(item.uid)}
-                    className="text-[10px] rounded bg-zinc-800 hover:bg-emerald-600/40 hover:text-emerald-300 text-zinc-400 px-2 py-1 font-semibold transition cursor-pointer"
+                    className="text-[10px] uppercase tracking-wider rounded-sm bg-cs-700 hover:bg-emerald-600/40 hover:text-emerald-300 text-zinc-400 px-2 py-1 font-semibold transition cursor-pointer"
                   >
                     Verkaufen
                   </button>

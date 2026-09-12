@@ -2,6 +2,7 @@
 
 import { CaseData, formatMoney } from "@/lib/types";
 import { playClick } from "@/lib/audio";
+import CaseImage from "./CaseImage";
 
 export default function CaseCard({
   caseData,
@@ -21,24 +22,27 @@ export default function CaseCard({
         playClick();
       }}
       disabled={disabled}
-      className={`relative shrink-0 w-44 rounded-xl border p-3 text-left transition active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-        selected ? "border-amber-400 bg-amber-400/5 shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-amber-400/40" : "border-zinc-800 bg-[#12161f] hover:border-zinc-600"
+      className={`group relative shrink-0 w-44 rounded-sm border text-left transition active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+        selected
+          ? "border-cs-green bg-cs-green-dark/40 shadow-[inset_0_0_22px_rgba(68,201,135,0.25)]"
+          : "border-white/10 bg-cs-800/70 hover:border-white/30 hover:bg-cs-800"
       }`}
     >
+      {selected && <div className="absolute inset-x-0 top-0 h-0.5 bg-cs-green" />}
       <div
-        className="relative h-24 rounded-lg flex items-center justify-center overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${caseData.gradient[0]}, ${caseData.gradient[1]})` }}
+        className="relative h-24 m-2 flex items-center justify-center overflow-hidden rounded-sm"
+        style={{ background: `linear-gradient(135deg, ${caseData.gradient[0]}33, ${caseData.gradient[1]}22)` }}
       >
-        <svg viewBox="0 0 64 48" className="w-20 h-auto drop-shadow-lg">
-          <rect x="8" y="12" width="48" height="28" rx="4" fill={caseData.accent} opacity="0.9" />
-          <rect x="8" y="12" width="48" height="10" rx="4" fill="rgba(255,255,255,0.18)" />
-          <rect x="26" y="6" width="12" height="10" rx="2" fill={caseData.accent} />
-          <rect x="8" y="24" width="48" height="3" fill="rgba(0,0,0,0.25)" />
-        </svg>
+        <CaseImage caseData={caseData} className="w-24 h-auto drop-shadow-lg transition-transform duration-300 group-hover:scale-110" />
         <div className="absolute inset-0 case-sheen" />
       </div>
-      <div className="mt-2 text-sm font-bold text-white leading-tight">{caseData.name}</div>
-      <div className="text-xs font-semibold text-amber-300">{formatMoney(caseData.price)}</div>
+      <div className="px-3 pb-3">
+        <div className="font-display text-sm font-medium text-white uppercase tracking-wider leading-tight truncate">{caseData.name}</div>
+        <div className="mt-1 flex items-center justify-between">
+          <span className="text-xs font-bold text-cs-gold tabular-nums">{formatMoney(caseData.price)}</span>
+          {selected && <span className="text-[9px] uppercase tracking-[0.2em] text-cs-green">Aktiv</span>}
+        </div>
+      </div>
     </button>
   );
 }

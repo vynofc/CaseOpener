@@ -26,7 +26,7 @@ export default function CaseIntro({ onDone }: { onDone: () => void }) {
   if (failed) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4">
       <video
         ref={videoRef}
         src="/assets/opening.mp4"
@@ -36,9 +36,9 @@ export default function CaseIntro({ onDone }: { onDone: () => void }) {
       />
       <button
         onClick={() => onDoneRef.current()}
-        className="absolute bottom-6 right-6 rounded-lg border border-zinc-600 bg-zinc-800/80 hover:bg-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 transition cursor-pointer"
+        className="absolute bottom-6 right-6 rounded-sm border border-white/25 bg-cs-800/80 hover:bg-cs-700 px-4 py-2 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-200 transition cursor-pointer"
       >
-        Überspringen ⏭
+        Überspringen
       </button>
     </div>
   );

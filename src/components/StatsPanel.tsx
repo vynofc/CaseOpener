@@ -8,9 +8,9 @@ export default function StatsPanel() {
   const net = stats.earned - stats.spent;
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-[#12161f] p-4">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-bold text-white">Statistik</h2>
+    <section id="stats" className="panel p-5 scroll-mt-20">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="panel-heading">Statistik</h2>
         <button
           onClick={() => {
             if (window.confirm("Wirklich alles zurücksetzen? Inventar und Statistik gehen verloren.")) resetAll();
@@ -31,7 +31,7 @@ export default function StatsPanel() {
         />
       </div>
       {stats.bestDrop && (
-        <div className="mt-3 rounded-lg bg-[#0d1119] border border-zinc-800 p-3 flex items-center gap-3">
+        <div className="mt-4 rounded-sm bg-cs-950/70 border border-white/10 p-3 flex items-center gap-3">
           <span
             className="inline-block w-2.5 h-2.5 rounded-full shrink-0"
             style={{ background: rarityById(stats.bestDrop.skin.rarity).color, boxShadow: `0 0 8px 2px ${rarityById(stats.bestDrop.skin.rarity).color}88` }}
@@ -54,7 +54,7 @@ export default function StatsPanel() {
 
 function Stat({ label, value, className = "text-white" }: { label: string; value: string; className?: string }) {
   return (
-    <div className="rounded-lg bg-[#0d1119] border border-zinc-800 p-3">
+    <div className="rounded-sm bg-cs-950/70 border border-white/10 p-3">
       <div className="text-[10px] uppercase tracking-wider text-zinc-500">{label}</div>
       <div className={`text-base font-bold ${className}`}>{value}</div>
     </div>

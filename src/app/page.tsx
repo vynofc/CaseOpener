@@ -7,7 +7,10 @@ import { rollDrop } from "@/lib/game";
 import { useGame } from "@/lib/game-context";
 import { playOpen, playClick } from "@/lib/audio";
 import Header from "@/components/Header";
+import MenuBackdrop from "@/components/MenuBackdrop";
+import LiveDrops from "@/components/LiveDrops";
 import CaseCard from "@/components/CaseCard";
+import CaseImage from "@/components/CaseImage";
 import CaseContents from "@/components/CaseContents";
 import Roulette from "@/components/Roulette";
 import WinModal from "@/components/WinModal";
@@ -70,20 +73,27 @@ export default function Home() {
   );
 
   const affordable = hydrated && canAfford(selected.price);
+  const busy = phase === "spinning" || phase === "opening";
 
   return (
-    <div className="min-h-full flex flex-col bg-[#0b0e14]">
+    <div className="min-h-full flex flex-col">
+      <MenuBackdrop />
       <Header />
-      <main className="mx-auto w-full max-w-6xl px-4 py-6 flex flex-col gap-6">
-        <section>
-          <h1 className="text-2xl font-black text-white mb-3">Wähle deine Kiste</h1>
-          <div className="flex gap-3 overflow-x-auto pb-2 case-row">
+      <main className="relative z-10 mx-auto w-full max-w-7xl px-4 py-6 flex flex-col gap-6">
+        <LiveDrops />
+
+        <section id="cases" className="scroll-mt-20">
+          <div className="flex items-end justify-between mb-3">
+            <h1 className="panel-heading">Behälter auswählen</h1>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">{CASES.length} Kisten verfügbar</span>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-3 case-row">
             {CASES.map((c) => (
               <CaseCard
                 key={c.id}
                 caseData={c}
                 selected={selected.id === c.id}
-                disabled={phase === "spinning" || phase === "opening"}
+                disabled={busy}
                 onSelect={() => {
                   if (phase === "idle") {
                     setSelected(c);
@@ -95,29 +105,39 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="flex flex-col gap-4">
-          <div className="flex items-center justify-between flex-wrap gap-3">
-            <h2 className="text-xl font-bold text-white">{selected.name}</h2>
-            <button
-              onClick={openCase}
-              disabled={phase !== "idle" || !affordable}
-              className="rounded-xl bg-amber-500 hover:bg-amber-400 disabled:bg-zinc-700 disabled:cursor-not-allowed active:scale-95 transition px-8 py-3 text-lg font-black text-zinc-900 disabled:text-zinc-400 shadow-[0_0_30px_-8px] shadow-amber-500/60 cursor-pointer"
-            >
-              {phase === "spinning" ? "Öffnet..." : phase === "opening" ? "Kiste wird geöffnet..." : `Öffnen für ${formatMoney(selected.price)}`}
-            </button>
+        <section id="open" className="panel overflow-hidden scroll-mt-20">
+          <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
+            <h2 className="panel-heading">{selected.name}</h2>
+            <span className="text-xs font-bold text-cs-gold tabular-nums">{formatMoney(selected.price)}</span>
           </div>
-          {!affordable && phase === "idle" && hydrated && (
-            <p className="text-sm text-red-400 -mt-2">Nicht genug Guthaben. Klicke oben auf „+ $100“.</p>
-          )}
 
           {(phase === "spinning" || phase === "result") && winner ? (
-            <Roulette caseData={selected} winner={winner} onDone={handleSettled} />
+            <div className="p-4">
+              <Roulette caseData={selected} winner={winner} onDone={handleSettled} />
+            </div>
           ) : (
-            <div className="relative w-full overflow-hidden rounded-xl border border-zinc-800 bg-[#0d1119] py-4 opacity-60">
-              <div className="flex gap-2 px-2 justify-center text-sm text-zinc-500 py-10">
-                Drücke „Öffnen“, um die Kiste zu drehen
+            <div className="relative flex flex-col items-center gap-6 px-6 py-10">
+              <div
+                className="pointer-events-none absolute inset-0 opacity-40"
+                style={{ background: `radial-gradient(ellipse 50% 60% at 50% 45%, ${selected.accent}30, transparent 70%)` }}
+              />
+              <div className="relative">
+                <CaseImage caseData={selected} eager className="w-56 sm:w-64 h-auto drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]" />
               </div>
-              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2 bg-amber-400/40" />
+              <div className="relative text-center">
+                <div className="font-display text-2xl font-medium uppercase tracking-[0.1em] text-white">{selected.name}</div>
+                <div className="text-xs text-zinc-400 mt-0.5">Behälter · {selected.skins.length} mögliche Gegenstände</div>
+              </div>
+              <button
+                onClick={openCase}
+                disabled={phase !== "idle" || !affordable}
+                className="btn-primary relative px-10 py-3.5 text-sm"
+              >
+                Behälter öffnen · {formatMoney(selected.price)}
+              </button>
+              {!affordable && phase === "idle" && hydrated && (
+                <p className="relative text-xs text-red-400 -mt-3">Nicht genug Guthaben. Klicke oben auf „+ $100“.</p>
+              )}
             </div>
           )}
         </section>

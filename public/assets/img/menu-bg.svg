@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#131a28"/>
+      <stop offset="0.45" stop-color="#232c3d"/>
+      <stop offset="0.72" stop-color="#4d4034"/>
+      <stop offset="1" stop-color="#6b5236"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.7" cy="0.62" r="0.55">
+      <stop offset="0" stop-color="#f5b45e" stop-opacity="0.9"/>
+      <stop offset="0.3" stop-color="#d18f4a" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#d18f4a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9a06a" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#c9a06a" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#c9a06a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#181a20"/>
+      <stop offset="1" stop-color="#0a0c11"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.45" r="0.85">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="#ffffff" fill-opacity="0.015"/>
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect width="1920" height="1080" fill="url(#sun)"/>
+
+  <g fill="#1a1f2b" opacity="0.75">
+    <path d="M0 690 h140 v-60 h90 v60 h110 v-95 h70 v95 h160 v-50 h120 v50 h140 v-80 h80 v80 h170 v-55 h100 v55 h150 v-70 h90 v70 h160 v-45 h110 v45 h230 v390 H0 Z"/>
+    <path d="M1180 690 v-180 a55 55 0 0 1 110 0 v180 Z"/>
+    <rect x="1226" y="380" width="18" height="140"/>
+    <path d="M1235 330 l22 50 h-44 Z"/>
+  </g>
+
+  <rect y="640" width="1920" height="140" fill="url(#fog)"/>
+
+  <g fill="#12151d" opacity="0.95">
+    <path d="M0 800 h200 v-70 h130 v70 h180 v-110 h100 v110 h220 v-60 h140 v60 h190 v-90 h110 v90 h240 v-55 h150 v55 h210 v280 H0 Z"/>
+    <rect x="320" y="600" width="26" height="130"/>
+    <path d="M333 560 l30 40 h-60 Z"/>
+    <rect x="1500" y="640" width="120" height="160"/>
+    <path d="M1500 640 h120 l-14 -34 h-92 Z"/>
+  </g>
+
+  <rect y="800" width="1920" height="280" fill="url(#ground)"/>
+
+  <g fill="#0d0f15" opacity="0.9">
+    <rect x="180" y="770" width="90" height="60"/>
+    <rect x="290" y="782" width="70" height="48"/>
+    <rect x="1560" y="775" width="110" height="55"/>
+  </g>
+
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+  <rect width="1920" height="1080" fill="url(#scan)"/>
+
+  <text x="1896" y="1052" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="3" fill="#ffffff" fill-opacity="0.28">PLACEHOLDER - /assets/img/menu-bg.jpg ERSETZEN</text>
+</svg>

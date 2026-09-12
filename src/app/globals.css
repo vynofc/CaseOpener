@@ -1,19 +1,34 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sofia-sans);
+  --font-display: var(--font-oswald);
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-cs-950: #0e0f12;
+  --color-cs-900: #151515;
+  --color-cs-850: #1c1c1e;
+  --color-cs-800: #272727;
+  --color-cs-700: #3a3a3d;
+  --color-cs-slate: #2d3540;
+  --color-cs-gold: #e4ae39;
+  --color-cs-gold-light: #f5c95e;
+  --color-cs-green: #44c987;
+  --color-cs-green-dark: #13432c;
+  --color-cs-green-hover: #1d5a3a;
+}
+
 :root {
-  --background: #0b0e14;
+  --background: #0e0f12;
   --foreground: #e8eaf0;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sofia-sans), Arial, Helvetica, sans-serif;
 }
 
 /* Scrollbars */
@@ -22,18 +37,101 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d1119;
+  background: #151515;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a3040;
+  background: #3a3a3d;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a4155;
+  background: #4a4a4f;
 }
 
 .case-row {
   scrollbar-width: thin;
+}
+
+/* Translucent dark panel over the page backdrop (caser.gg style) */
+.panel {
+  background: color-mix(in srgb, var(--color-cs-900) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 2px;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+    0 10px 40px rgba(0, 0, 0, 0.45);
+}
+.panel-heading {
+  font-family: var(--font-oswald), Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: #ffffff;
+}
+
+/* caser.gg primary button: dark green body, bright green border, inner glow */
+.btn-primary {
+  border: 1px solid var(--color-cs-green);
+  background: var(--color-cs-green-dark);
+  color: var(--color-cs-green);
+  box-shadow: inset 0 0 26px rgba(68, 201, 135, 0.45);
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-cs-green-hover);
+  box-shadow: inset 0 0 26px rgba(68, 201, 135, 0.65);
+}
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn-primary:disabled {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: #4b4b4f;
+  color: rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Light gradient plate behind item images (like Steam/caser item tiles) */
+.item-plate {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Live-drop feed: new entry slide-in */
+@keyframes drop-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+.drop-new {
+  animation: drop-in 0.4s ease-out both;
+}
+
+/* Online indicator pulse */
+@keyframes live-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(68, 201, 135, 0.55);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 5px rgba(68, 201, 135, 0);
+  }
+}
+.live-dot {
+  animation: live-pulse 2s ease-in-out infinite;
 }
 
 /* Winner card highlight pulse */
