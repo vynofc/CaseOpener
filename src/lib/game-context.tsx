@@ -26,7 +26,7 @@ interface GameContextValue {
 const GameContext = createContext<GameContextValue | null>(null);
 
 const STORAGE_KEY = "cs2-case-opener-v1";
-const START_BALANCE = 50;
+const START_BALANCE = 0;
 
 interface Persisted {
   balance: number;

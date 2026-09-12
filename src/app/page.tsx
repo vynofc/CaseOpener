@@ -131,7 +131,7 @@ export default function Home() {
                 Open case · {formatMoney(selected.price)}
               </button>
               {!affordable && phase === "idle" && hydrated && (
-                <p className="relative text-xs text-red-400 -mt-3">Not enough balance. Click &quot;+ $100&quot; above.</p>
+                <p className="relative text-xs text-red-400 -mt-3">Not enough balance. Click &quot;Deposit&quot; above to add funds.</p>
               )}
             </div>
           )}

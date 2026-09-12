@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useGame } from "@/lib/game-context";
 import { formatMoney } from "@/lib/types";
 import { playClick } from "@/lib/audio";
+import DepositModal from "./DepositModal";
 
 const NAV = [
   { href: "/", label: "Cases" },
@@ -12,7 +14,8 @@ const NAV = [
 ];
 
 export default function Header() {
-  const { balance, addFunds, soundOn, toggleSound, hydrated } = useGame();
+  const { balance, soundOn, toggleSound, hydrated } = useGame();
+  const [depositOpen, setDepositOpen] = useState(false);
 
   return (
     <header
@@ -73,15 +76,16 @@ export default function Header() {
           </div>
           <button
             onClick={() => {
-              addFunds(100);
+              setDepositOpen(true);
               playClick();
             }}
             className="btn-primary px-4 py-2 text-[11px]"
           >
-            + $100
+            Deposit
           </button>
         </div>
       </div>
+      {depositOpen && <DepositModal onClose={() => setDepositOpen(false)} />}
     </header>
   );
 }
