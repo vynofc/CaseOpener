@@ -10,7 +10,7 @@ npm run dev      # Next.js dev server on :3000
 npm run build    # production build
 npm run lint     # ESLint 9 flat config (eslint.config.mjs, eslint-config-next)
 npm test         # Vitest unit tests (src/lib/*.test.ts)
-node scripts/generate-cases.mjs   # regenerate src/lib/cases.ts from database.js
+node scripts/generate-cases.mjs   # regenerate src/lib/cases.ts from data/database.js
 ```
 
 Verify changes with `npm run lint`, `npm test` and `npm run build` (build is the typecheck; `strict: true`, no `tsc` script). GitHub Actions (`.github/workflows/ci.yml`) runs lint + tests + build on every push to master/main and on PRs; `package-lock.json` is committed so CI can use `npm ci`.
@@ -49,10 +49,10 @@ Single route: `src/app/page.tsx` (client component) + `src/app/layout.tsx` (wrap
 
 ### Case data pipeline (important)
 
-- `src/lib/cases.ts` (~42 cases, very large) is **generated**; do not edit by hand. Source of truth is `database.js` (CJS module: one array per case key, plus a `special_items` knife/glove pool). Edit `database.js` or the generator, then run `node scripts/generate-cases.mjs`.
+- `src/lib/cases.ts` (~42 cases, very large) is **generated**; do not edit by hand. Source of truth is `data/database.js` (CJS module: one array per case key, plus a `special_items` knife/glove pool). Edit `data/database.js` or the generator, then run `node scripts/generate-cases.mjs`.
 - Skin `basePrice` and case `price` are **synthetic**: the generator derives them from a FNV-1a hash of the item/case name. They are deterministic but are not real market prices.
 - The generator maps database rarity `ancient` -> `rare` and injects 20 knives/gloves per case from the `special_items` pool.
-- `database.js` is third-party content licensed **CC BY-NC 4.0** (non-commercial, attribution required); keep its header intact.
+- `data/database.js` is third-party content licensed **CC BY-NC 4.0** (non-commercial, attribution required); keep its header intact.
 - Skin images are remote URLs (`community.akamai.steamstatic.com`, one GitHub raw URL for rares). Components use plain `<img>`, not `next/image` (no `remotePatterns` in `next.config.ts`); `SkinImage` falls back to the inline-SVG `WeaponIcon` on load error or missing URL.
 
 ### Audio (`src/lib/audio.ts`)

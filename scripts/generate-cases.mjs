@@ -2,7 +2,7 @@ import { createRequire } from "module";
 import { writeFileSync } from "fs";
 
 const require = createRequire(import.meta.url);
-const CASE_DB = require("../database.js");
+const CASE_DB = require("../data/database.js");
 
 const CASE_NAMES = {
   kilowatt_case: "Kilowatt Case",

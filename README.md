@@ -27,7 +27,7 @@ Dann http://localhost:3000 öffnen.
 
 ## Cases neu generieren
 
-Die Case-Daten (`src/lib/cases.ts`) werden aus `database.js` generiert:
+Die Case-Daten (`src/lib/cases.ts`) werden aus `data/database.js` generiert:
 
 ```bash
 node scripts/generate-cases.mjs
