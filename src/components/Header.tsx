@@ -7,6 +7,7 @@ import { playClick } from "@/lib/audio";
 
 const NAV = [
   { href: "/", label: "Kisten" },
+  { href: "/upgrade", label: "Upgrade" },
   { href: "/inventar", label: "Inventar" },
 ];
 

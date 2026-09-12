@@ -32,7 +32,10 @@ function pickWeighted(skins: Skin[]): Skin {
 }
 
 export function rollDrop(caseData: CaseData, uid: string): InventoryItem {
-  const skin = rollSkin(caseData);
+  return rollItemFromSkin(rollSkin(caseData), caseData.id, uid);
+}
+
+function rollItemFromSkin(skin: Skin, caseId: string, uid: string): InventoryItem {
   const wear = WEARS[Math.floor(Math.random() * WEARS.length)];
   const floatValue = wear.min + Math.random() * (wear.max - wear.min);
   const stattrak = skin.rarity !== "rare" && Math.random() < 0.1;
@@ -42,13 +45,29 @@ export function rollDrop(caseData: CaseData, uid: string): InventoryItem {
   return {
     uid,
     skin,
-    caseId: caseData.id,
+    caseId,
     wear,
     floatValue,
     stattrak,
     price: Math.round(price * 100) / 100,
     wonAt: Date.now(),
   };
+}
+
+export const UPGRADE_HOUSE_EDGE = 0.95;
+export const UPGRADE_MAX_CHANCE = 0.95;
+
+export function upgradeChance(stakePrice: number, targetPrice: number): number {
+  if (stakePrice <= 0 || targetPrice <= 0) return 0;
+  return Math.min(UPGRADE_MAX_CHANCE, (stakePrice / targetPrice) * UPGRADE_HOUSE_EDGE);
+}
+
+export function rollUpgradeWin(chance: number): boolean {
+  return Math.random() < chance;
+}
+
+export function buildUpgradeItem(skin: Skin, uid: string): InventoryItem {
+  return rollItemFromSkin(skin, "upgrade", uid);
 }
 
 export function buildStrip(caseData: CaseData, winner: InventoryItem, length = 80, winIndex = 60): InventoryItem[] {

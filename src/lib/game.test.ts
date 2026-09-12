@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CASES } from "./cases";
-import { buildStrip, rollDrop, rollRarity, rollSkin } from "./game";
+import { buildStrip, buildUpgradeItem, rollDrop, rollRarity, rollSkin, upgradeChance, UPGRADE_MAX_CHANCE } from "./game";
 import { RARITIES, WEARS, formatMoney, rarityById } from "./types";
 
 const testCase = CASES[0];
@@ -63,6 +63,43 @@ describe("buildStrip", () => {
     expect(strip).toHaveLength(80);
     expect(strip[60]).toBe(winner);
     expect(strip.every((s, i) => i === 60 || s.uid !== "winner")).toBe(true);
+  });
+});
+
+describe("upgradeChance", () => {
+  it("scales with the stake/target value ratio", () => {
+    expect(upgradeChance(5, 10)).toBeCloseTo(0.475, 5);
+    expect(upgradeChance(1, 100)).toBeCloseTo(0.0095, 5);
+  });
+
+  it("caps at the max chance and handles invalid input", () => {
+    expect(upgradeChance(10, 10)).toBe(UPGRADE_MAX_CHANCE);
+    expect(upgradeChance(100, 10)).toBe(UPGRADE_MAX_CHANCE);
+    expect(upgradeChance(0, 10)).toBe(0);
+    expect(upgradeChance(10, 0)).toBe(0);
+  });
+});
+
+describe("buildUpgradeItem", () => {
+  it("builds a valid item for the chosen skin", () => {
+    const skin = testCase.skins[0];
+    for (let i = 0; i < 200; i++) {
+      const item = buildUpgradeItem(skin, `u-${i}`);
+      expect(item.uid).toBe(`u-${i}`);
+      expect(item.skin).toBe(skin);
+      expect(item.floatValue).toBeGreaterThanOrEqual(item.wear.min);
+      expect(item.floatValue).toBeLessThanOrEqual(item.wear.max);
+      expect(item.price).toBeGreaterThanOrEqual(0.03);
+      expect(Math.round(item.price * 100) / 100).toBe(item.price);
+    }
+  });
+
+  it("never makes rare skins StatTrak", () => {
+    const rare = CASES.flatMap((c) => c.skins).find((s) => s.rarity === "rare");
+    expect(rare).toBeDefined();
+    for (let i = 0; i < 100; i++) {
+      expect(buildUpgradeItem(rare!, `r-${i}`).stattrak).toBe(false);
+    }
   });
 });
 

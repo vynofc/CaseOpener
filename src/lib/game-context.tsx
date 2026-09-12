@@ -14,6 +14,8 @@ interface GameContextValue {
   deduct: (amount: number) => boolean;
   addFunds: (amount: number) => void;
   keepItem: (item: InventoryItem) => void;
+  addItem: (item: InventoryItem) => void;
+  removeItem: (uid: string) => void;
   sellDirect: (item: InventoryItem) => void;
   sellItem: (uid: string) => void;
   sellAll: () => void;
@@ -108,6 +110,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     [recordOpen]
   );
 
+  const addItem = useCallback((item: InventoryItem) => {
+    setInventory((inv) => [item, ...inv]);
+  }, []);
+
+  const removeItem = useCallback((uid: string) => {
+    setInventory((inv) => inv.filter((i) => i.uid !== uid));
+  }, []);
+
   const sellItem = useCallback(
     (uid: string) => {
       const item = inventory.find((i) => i.uid === uid);
@@ -153,13 +163,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       deduct,
       addFunds,
       keepItem,
+      addItem,
+      removeItem,
       sellDirect,
       sellItem,
       sellAll,
       toggleSound,
       resetAll,
     }),
-    [hydrated, balance, inventory, stats, soundOn, canAfford, deduct, addFunds, keepItem, sellDirect, sellItem, sellAll, toggleSound, resetAll]
+    [hydrated, balance, inventory, stats, soundOn, canAfford, deduct, addFunds, keepItem, addItem, removeItem, sellDirect, sellItem, sellAll, toggleSound, resetAll]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

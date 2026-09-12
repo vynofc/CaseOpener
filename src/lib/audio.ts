@@ -89,3 +89,8 @@ export function playSell() {
   blip(880, 0.12, "sine", 0.07);
   blip(1175, 0.15, "sine", 0.07, 0.08);
 }
+
+export function playLose() {
+  blip(330, 0.18, "triangle", 0.08);
+  blip(220, 0.28, "triangle", 0.08, 0.14);
+}
