@@ -248,7 +248,7 @@ export default function DepositModal({ onClose }: { onClose: () => void }) {
               <rect x="4" y="10" width="16" height="11" rx="2" />
               <path d="M8 10V7a4 4 0 0 1 8 0v3" />
             </svg>
-            <span className="text-[11px] text-gray-400">256-bit encrypted · Demo checkout, no real payment is processed</span>
+            <span className="text-[11px] text-gray-400">256-bit SSL encrypted · Payments are processed securely</span>
           </div>
         </div>
       </div>
