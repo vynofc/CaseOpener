@@ -14,8 +14,6 @@ import CaseContents from "@/components/CaseContents";
 import Roulette from "@/components/Roulette";
 import WinModal from "@/components/WinModal";
 import CaseIntro from "@/components/CaseIntro";
-import Inventory from "@/components/Inventory";
-import StatsPanel from "@/components/StatsPanel";
 
 type Phase = "idle" | "opening" | "spinning" | "result";
 
@@ -140,8 +138,6 @@ export default function Home() {
         </section>
 
         <CaseContents caseData={selected} />
-        <Inventory />
-        <StatsPanel />
       </main>
 
       {phase === "opening" && <CaseIntro onDone={handleIntroDone} />}

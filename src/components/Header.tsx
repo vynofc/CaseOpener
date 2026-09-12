@@ -1,14 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useGame } from "@/lib/game-context";
 import { formatMoney } from "@/lib/types";
 import { playClick } from "@/lib/audio";
 
 const NAV = [
-  { href: "#cases", label: "Kisten" },
-  { href: "#open", label: "Öffnen" },
-  { href: "#inventory", label: "Inventar" },
-  { href: "#stats", label: "Statistik" },
+  { href: "/", label: "Kisten" },
+  { href: "/inventar", label: "Inventar" },
 ];
 
 export default function Header() {
@@ -23,7 +22,7 @@ export default function Header() {
       }}
     >
       <div className="mx-auto max-w-7xl px-4 h-16 flex items-center gap-6">
-        <a href="#cases" className="flex items-center gap-2.5 shrink-0" onClick={() => playClick()}>
+        <Link href="/" className="flex items-center gap-2.5 shrink-0" onClick={() => playClick()}>
           <svg viewBox="0 0 24 24" className="w-6 h-6 text-cs-green" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
             <circle cx="12" cy="12" r="7" />
             <path d="M12 1v6M12 17v6M1 12h6M17 12h6" />
@@ -31,18 +30,18 @@ export default function Header() {
           <span className="font-display font-medium text-white tracking-[0.1em] uppercase text-lg leading-none">
             CS2 <span className="text-cs-green">Case Opener</span>
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-1 ml-2">
           {NAV.map((n) => (
-            <a
+            <Link
               key={n.href}
               href={n.href}
               onClick={() => playClick()}
               className="px-3 py-2 font-display text-sm uppercase tracking-[0.12em] text-white/60 hover:text-white transition border-b-2 border-transparent hover:border-cs-green/70"
             >
               {n.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
