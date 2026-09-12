@@ -12,7 +12,7 @@ export default function Inventory() {
     <section id="inventory" className="panel p-5 scroll-mt-20">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h2 className="panel-heading">
-          Inventar <span className="text-zinc-600 normal-case tracking-normal">({inventory.length})</span>
+          Inventory <span className="text-zinc-600 normal-case tracking-normal">({inventory.length})</span>
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-sm text-emerald-400 font-semibold">{formatMoney(total)}</span>
@@ -21,12 +21,12 @@ export default function Inventory() {
             disabled={inventory.length === 0}
             className="btn-primary px-3 py-1.5 text-[10px]"
           >
-            Alles verkaufen
+            Sell all
           </button>
         </div>
       </div>
       {inventory.length === 0 ? (
-        <p className="text-sm text-zinc-500 py-6 text-center">Noch keine Items. Öffne eine Kiste!</p>
+        <p className="text-sm text-zinc-500 py-6 text-center">No items yet. Open a case!</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
           {inventory.map((item) => {
@@ -51,7 +51,7 @@ export default function Inventory() {
                     onClick={() => sellItem(item.uid)}
                     className="text-[10px] uppercase tracking-wider rounded-sm bg-cs-700 hover:bg-emerald-600/40 hover:text-emerald-300 text-zinc-400 px-2 py-1 font-semibold transition cursor-pointer"
                   >
-                    Verkaufen
+                    Sell
                   </button>
                 </div>
               </div>

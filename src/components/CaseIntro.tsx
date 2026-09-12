@@ -38,7 +38,7 @@ export default function CaseIntro({ onDone }: { onDone: () => void }) {
         onClick={() => onDoneRef.current()}
         className="absolute bottom-6 right-6 rounded-sm border border-white/25 bg-cs-800/80 hover:bg-cs-700 px-4 py-2 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-200 transition cursor-pointer"
       >
-        Überspringen
+        Skip
       </button>
     </div>
   );

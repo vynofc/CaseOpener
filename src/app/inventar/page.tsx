@@ -5,7 +5,7 @@ import MenuBackdrop from "@/components/MenuBackdrop";
 import Inventory from "@/components/Inventory";
 import StatsPanel from "@/components/StatsPanel";
 
-export default function InventarPage() {
+export default function InventoryPage() {
   return (
     <div className="min-h-full flex flex-col">
       <MenuBackdrop />

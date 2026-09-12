@@ -20,13 +20,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CS2 Case Opener",
-  description: "Öffne CS2-Kisten, sammle Skins und baue dein Inventar auf. Mit echten Drop-Wahrscheinlichkeiten, StatTrak und Float-Werten.",
+  description: "Open CS2 cases, collect skins and build your inventory. With real drop odds, StatTrak and float values.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="de"
+      lang="en"
       className={`${oswald.variable} ${sofiaSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col">

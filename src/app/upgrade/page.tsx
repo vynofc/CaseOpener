@@ -97,24 +97,24 @@ export default function UpgradePage() {
             <div>
               <h1 className="panel-heading">Upgrader</h1>
               <p className="text-xs text-zinc-500 mt-1">
-                Setze ein Item aus deinem Inventar ein und gewinne mit etwas Glück ein teureres.
+                Stake an item from your inventory and win a more expensive one with a bit of luck.
               </p>
             </div>
             {valid && (
               <span className="text-xs text-zinc-400 tabular-nums">
-                Multiplikator: <span className="text-cs-gold font-bold">×{(target.basePrice / stake.price).toFixed(2)}</span>
+                Multiplier: <span className="text-cs-gold font-bold">×{(target.basePrice / stake.price).toFixed(2)}</span>
               </span>
             )}
           </div>
 
           <div className="grid gap-4 lg:grid-cols-[1fr_320px_1fr]">
             <div className="rounded-sm border border-white/10 bg-cs-950/60 p-3 flex flex-col min-h-64">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2">Dein Einsatz</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2">Your stake</div>
               {!hydrated ? null : inventory.length === 0 ? (
                 <p className="text-sm text-zinc-500 text-center my-auto py-6">
-                  Dein Inventar ist leer.{" "}
+                  Your inventory is empty.{" "}
                   <Link href="/" className="text-cs-green hover:underline" onClick={() => playClick()}>
-                    Erst Kisten öffnen
+                    Open some cases first
                   </Link>
                 </p>
               ) : (
@@ -168,7 +168,7 @@ export default function UpgradePage() {
                         className="text-sm font-bold uppercase tracking-widest"
                         style={{ color: rarityById(outcome.item.skin.rarity).color }}
                       >
-                        Upgrade gelungen!
+                        Upgrade successful!
                       </div>
                       <SkinImage skin={outcome.item.skin} className="w-40 h-28 object-contain drop-shadow-lg" />
                       <div className="text-xs text-zinc-400">{outcome.item.skin.weapon}</div>
@@ -183,19 +183,19 @@ export default function UpgradePage() {
                         {formatMoney(outcome.item.price)}
                       </div>
                       <div className="text-[10px] text-zinc-500">
-                        Einsatz: {outcome.stake.skin.weapon} | {outcome.stake.skin.name} ({formatMoney(outcome.stake.price)})
+                        Staked: {outcome.stake.skin.weapon} | {outcome.stake.skin.name} ({formatMoney(outcome.stake.price)})
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className="text-sm font-bold uppercase tracking-widest text-red-400">Upgrade fehlgeschlagen</div>
+                      <div className="text-sm font-bold uppercase tracking-widest text-red-400">Upgrade failed</div>
                       <div className="text-xs text-zinc-400">
-                        {outcome.stake.skin.weapon} | {outcome.stake.skin.name} ({formatMoney(outcome.stake.price)}) verloren.
+                        {outcome.stake.skin.weapon} | {outcome.stake.skin.name} ({formatMoney(outcome.stake.price)}) lost.
                       </div>
                     </>
                   )}
                   <button onClick={reset} className="btn-primary px-6 py-2.5 text-xs mt-2">
-                    Neuer Versuch
+                    Try again
                   </button>
                 </div>
               ) : (
@@ -210,7 +210,7 @@ export default function UpgradePage() {
                           <div className="text-xs font-bold text-zinc-300 tabular-nums">{formatMoney(stake.price)}</div>
                         </>
                       ) : (
-                        <div className="text-xs text-zinc-600 border border-dashed border-white/15 rounded-sm px-2 py-6">Einsatz wählen</div>
+                        <div className="text-xs text-zinc-600 border border-dashed border-white/15 rounded-sm px-2 py-6">Select stake</div>
                       )}
                     </div>
                     <svg viewBox="0 0 24 24" className="w-6 h-6 text-cs-green shrink-0" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
@@ -225,7 +225,7 @@ export default function UpgradePage() {
                           <div className="text-xs font-bold text-cs-gold tabular-nums">{formatMoney(target.basePrice)}</div>
                         </>
                       ) : (
-                        <div className="text-xs text-zinc-600 border border-dashed border-white/15 rounded-sm px-2 py-6">Ziel wählen</div>
+                        <div className="text-xs text-zinc-600 border border-dashed border-white/15 rounded-sm px-2 py-6">Select target</div>
                       )}
                     </div>
                   </div>
@@ -233,13 +233,13 @@ export default function UpgradePage() {
                     <div className="font-display text-3xl font-bold text-white tabular-nums">
                       {valid ? `${(chance * 100).toFixed(1)}%` : "–"}
                     </div>
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Gewinnchance</div>
+                    <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Win chance</div>
                   </div>
                   <button onClick={startUpgrade} disabled={!valid || busy} className="btn-primary px-8 py-3 text-sm w-full">
-                    Upgraden
+                    Upgrade
                   </button>
                   {stake && target && target.basePrice <= stake.price && (
-                    <p className="text-[11px] text-red-400 text-center -mt-1">Das Ziel muss teurer sein als dein Einsatz.</p>
+                    <p className="text-[11px] text-red-400 text-center -mt-1">The target must be worth more than your stake.</p>
                   )}
                 </>
               )}
@@ -247,12 +247,12 @@ export default function UpgradePage() {
 
             <div className="rounded-sm border border-white/10 bg-cs-950/60 p-3 flex flex-col min-h-64">
               <div className="flex items-center gap-2 mb-2">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Ziel wählen</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Select target</div>
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Skin suchen…"
+                  placeholder="Search skins…"
                   disabled={busy}
                   className="ml-auto w-32 rounded-sm border border-white/10 bg-black/40 px-2 py-1 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cs-green/60"
                 />
@@ -263,13 +263,13 @@ export default function UpgradePage() {
                   }}
                   disabled={busy}
                   className="rounded-sm border border-white/10 bg-black/40 px-2 py-1 text-[10px] uppercase tracking-wider text-zinc-400 hover:text-white transition cursor-pointer disabled:opacity-50"
-                  title="Sortierung umkehren"
+                  title="Reverse sort order"
                 >
-                  Preis {sortDesc ? "↓" : "↑"}
+                  Price {sortDesc ? "↓" : "↑"}
                 </button>
               </div>
               {shownTargets.length === 0 ? (
-                <p className="text-sm text-zinc-500 text-center my-auto py-6">Keine passenden Skins gefunden.</p>
+                <p className="text-sm text-zinc-500 text-center my-auto py-6">No matching skins found.</p>
               ) : (
                 <>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2 overflow-y-auto max-h-96 pr-1">
@@ -302,7 +302,7 @@ export default function UpgradePage() {
                   </div>
                   {targets.length > MAX_TARGETS && (
                     <p className="text-[10px] text-zinc-600 text-center mt-2">
-                      {MAX_TARGETS} von {targets.length} angezeigt – Suche nutzen, um zu filtern.
+                      Showing {MAX_TARGETS} of {targets.length} - use the search to filter.
                     </p>
                   )}
                 </>

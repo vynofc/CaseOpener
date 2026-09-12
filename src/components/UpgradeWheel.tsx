@@ -103,12 +103,12 @@ export default function UpgradeWheel({
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         {settled ? (
           <span className="font-display text-xl font-bold uppercase tracking-[0.12em]" style={{ color: resultColor }}>
-            {win ? "Gewonnen" : "Verloren"}
+            {win ? "Won" : "Lost"}
           </span>
         ) : (
           <>
             <span className="font-display text-4xl font-bold text-white tabular-nums">{(chance * 100).toFixed(1)}%</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Gewinnchance</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Win chance</span>
           </>
         )}
       </div>

@@ -60,13 +60,13 @@ export default function WinModal({
               onClick={onSell}
               className="btn-primary px-3 py-2.5 text-xs"
             >
-              Verkaufen (+{formatMoney(item.price)})
+              Sell (+{formatMoney(item.price)})
             </button>
             <button
               onClick={onKeep}
               className="rounded-sm bg-black/45 hover:bg-black/25 border border-white/10 active:scale-95 transition px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-white cursor-pointer"
             >
-              Behalten
+              Keep
             </button>
           </div>
           <button
@@ -74,7 +74,7 @@ export default function WinModal({
             disabled={!canOpenAgain}
             className="mt-2 w-full rounded-sm border border-cs-gold/50 bg-cs-gold/10 hover:bg-cs-gold/20 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-cs-gold cursor-pointer"
           >
-            Nochmal öffnen ({formatMoney(caseData.price)})
+            Open again ({formatMoney(caseData.price)})
           </button>
         </div>
       </div>

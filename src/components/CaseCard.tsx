@@ -40,7 +40,7 @@ export default function CaseCard({
         <div className="font-display text-sm font-medium text-white uppercase tracking-wider leading-tight truncate">{caseData.name}</div>
         <div className="mt-1 flex items-center justify-between">
           <span className="text-xs font-bold text-cs-gold tabular-nums">{formatMoney(caseData.price)}</span>
-          {selected && <span className="text-[9px] uppercase tracking-[0.2em] text-cs-green">Aktiv</span>}
+          {selected && <span className="text-[9px] uppercase tracking-[0.2em] text-cs-green">Active</span>}
         </div>
       </div>
     </button>

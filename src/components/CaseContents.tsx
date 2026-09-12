@@ -8,7 +8,7 @@ export default function CaseContents({ caseData }: { caseData: CaseData }) {
 
   return (
     <section className="panel p-5">
-      <h2 className="panel-heading">Enthält einen der folgenden Gegenstände</h2>
+      <h2 className="panel-heading">Contains one of the following items</h2>
       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 mb-4">
         {RARITIES.filter((r) => caseData.skins.some((s) => s.rarity === r.id)).map((r) => (
           <span key={r.id} className="text-xs font-semibold" style={{ color: r.color }}>

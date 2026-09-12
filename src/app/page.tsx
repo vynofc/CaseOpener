@@ -79,8 +79,8 @@ export default function Home() {
       <main className="relative z-10 mx-auto w-full max-w-7xl px-4 py-6 flex flex-col gap-6">
         <section id="cases" className="scroll-mt-20">
           <div className="flex items-end justify-between mb-3">
-            <h1 className="panel-heading">Behälter auswählen</h1>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">{CASES.length} Kisten verfügbar</span>
+            <h1 className="panel-heading">Select a case</h1>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">{CASES.length} cases available</span>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-3 case-row">
             {CASES.map((c) => (
@@ -121,17 +121,17 @@ export default function Home() {
               </div>
               <div className="relative text-center">
                 <div className="font-display text-2xl font-medium uppercase tracking-[0.1em] text-white">{selected.name}</div>
-                <div className="text-xs text-zinc-400 mt-0.5">Behälter · {selected.skins.length} mögliche Gegenstände</div>
+                <div className="text-xs text-zinc-400 mt-0.5">Case · {selected.skins.length} possible items</div>
               </div>
               <button
                 onClick={openCase}
                 disabled={phase !== "idle" || !affordable}
                 className="btn-primary relative px-10 py-3.5 text-sm"
               >
-                Behälter öffnen · {formatMoney(selected.price)}
+                Open case · {formatMoney(selected.price)}
               </button>
               {!affordable && phase === "idle" && hydrated && (
-                <p className="relative text-xs text-red-400 -mt-3">Nicht genug Guthaben. Klicke oben auf „+ $100“.</p>
+                <p className="relative text-xs text-red-400 -mt-3">Not enough balance. Click &quot;+ $100&quot; above.</p>
               )}
             </div>
           )}

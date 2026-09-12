@@ -18,3 +18,6 @@ npm-debug.log*
 .crush/
 skills-lock.json
 .npmrc-empty
+
+crushrc
+ideen.md

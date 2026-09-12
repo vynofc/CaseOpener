@@ -1,6 +1,6 @@
 # AGENTS.md
 
-CS2 Case Opener: a single-page Next.js app that simulates opening CS2 weapon cases (roulette animation, drop odds, inventory, stats). UI text and metadata are in **German** (`lang="de"`); keep new user-facing strings in German. Code identifiers and comments are English.
+CS2 Case Opener: a single-page Next.js app that simulates opening CS2 weapon cases (roulette animation, drop odds, inventory, stats). UI text and metadata are in **English** (`lang="en"`); keep new user-facing strings in English. Code identifiers and comments are English.
 
 ## Commands
 

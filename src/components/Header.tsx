@@ -6,9 +6,9 @@ import { formatMoney } from "@/lib/types";
 import { playClick } from "@/lib/audio";
 
 const NAV = [
-  { href: "/", label: "Kisten" },
+  { href: "/", label: "Cases" },
   { href: "/upgrade", label: "Upgrade" },
-  { href: "/inventar", label: "Inventar" },
+  { href: "/inventar", label: "Inventory" },
 ];
 
 export default function Header() {
@@ -50,7 +50,7 @@ export default function Header() {
           <button
             onClick={toggleSound}
             className="rounded-sm border border-white/15 hover:border-white/35 hover:bg-white/5 p-2 text-zinc-300 transition cursor-pointer"
-            title={soundOn ? "Sound aus" : "Sound an"}
+            title={soundOn ? "Sound off" : "Sound on"}
           >
             {soundOn ? (
               <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
@@ -66,7 +66,7 @@ export default function Header() {
             )}
           </button>
           <div className="rounded-sm border border-cs-gold/30 bg-black/40 px-3 py-1.5 min-w-28 text-right">
-            <span className="text-[9px] uppercase tracking-[0.2em] text-white/40 block leading-none mb-0.5">Guthaben</span>
+            <span className="text-[9px] uppercase tracking-[0.2em] text-white/40 block leading-none mb-0.5">Balance</span>
             <span className="text-sm font-bold text-cs-gold tabular-nums leading-none">
               {hydrated ? formatMoney(balance) : "..."}
             </span>
