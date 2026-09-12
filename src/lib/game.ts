@@ -1,8 +1,19 @@
 import { CaseData, InventoryItem, RarityId, Skin, WEARS } from "./types";
 
+let luckMultiplier = 1;
+
+export function setLuckMultiplier(mult: number): void {
+  luckMultiplier = Number.isFinite(mult) && mult > 0 ? mult : 1;
+}
+
+export function getLuckMultiplier(): number {
+  return luckMultiplier;
+}
+
 export function rollRarity(): RarityId {
   const r = Math.random() * 100;
-  if (r < 0.26) return "rare";
+  const rareCut = Math.min(100, 0.26 * luckMultiplier);
+  if (r < rareCut) return "rare";
   if (r < 0.9) return "covert";
   if (r < 4.1) return "classified";
   if (r < 20.08) return "restricted";
@@ -82,8 +93,12 @@ export function pickUpgradeTarget(skins: Skin[], stakePrice: number, chance: num
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+export function buildItemFromSkin(skin: Skin, caseId: string, uid: string): InventoryItem {
+  return rollItemFromSkin(skin, caseId, uid);
+}
+
 export function buildUpgradeItem(skin: Skin, uid: string): InventoryItem {
-  return rollItemFromSkin(skin, "upgrade", uid);
+  return buildItemFromSkin(skin, "upgrade", uid);
 }
 
 export function buildStrip(caseData: CaseData, winner: InventoryItem, length = 80, winIndex = 60): InventoryItem[] {

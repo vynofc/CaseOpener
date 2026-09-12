@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useGame } from "@/lib/game-context";
+import { AdminHandlers, runAdminCommand } from "@/lib/admin";
 
 type LineKind = "echo" | "out" | "err";
 
@@ -22,6 +24,7 @@ const SHORTCUTS = [
 interface CommandDef {
   name: string;
   desc: string;
+  usage?: string;
   lines: () => string[];
 }
 
@@ -29,7 +32,7 @@ const COMMANDS: CommandDef[] = [
   {
     name: "help",
     desc: "List available commands",
-    lines: () => COMMANDS.map((c) => `${c.name.padEnd(10)} ${c.desc}`),
+    lines: () => COMMANDS.map((c) => `${(c.usage ?? c.name).padEnd(22)} ${c.desc}`),
   },
   {
     name: "shortcuts",
@@ -37,7 +40,15 @@ const COMMANDS: CommandDef[] = [
     lines: () => SHORTCUTS.map((s) => `${s.keys.padEnd(12)} ${s.desc}`),
   },
   { name: "clear", desc: "Clear the console output", lines: () => [] },
+  { name: "login", usage: "login <password>", desc: "Unlock admin commands (once per session)", lines: () => [] },
+  { name: "logout", desc: "Lock admin commands again", lines: () => [] },
+  { name: "luck", usage: "luck <x>", desc: "Multiply the gold (rare) drop chance, e.g. luck 10; luck 1 resets", lines: () => [] },
+  { name: "money", usage: "money <amount>", desc: "Add funds to your balance, e.g. money 1000", lines: () => [] },
+  { name: "give", usage: "give <skin name>", desc: "Add a skin to your inventory, e.g. give redline", lines: () => [] },
+  { name: "status", desc: "Show admin state (unlock, luck, balance)", lines: () => [] },
 ];
+
+const BUILTINS = new Set(["help", "shortcuts", "clear"]);
 
 const WELCOME: LogLine[] = [
   { id: 0, kind: "out", text: "CS2 Case Opener developer console" },
@@ -46,6 +57,7 @@ const WELCOME: LogLine[] = [
 ];
 
 export default function DevConsole() {
+  const { addFunds, addItem, balance } = useGame();
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [lines, setLines] = useState<LogLine[]>(WELCOME);
@@ -57,6 +69,12 @@ export default function DevConsole() {
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const balanceRef = useRef(balance);
+  const handlersRef = useRef<AdminHandlers>({ addFunds, addItem });
+  useEffect(() => {
+    balanceRef.current = balance;
+    handlersRef.current = { addFunds, addItem, getBalance: () => balanceRef.current };
+  });
 
   const query = value.trim().toLowerCase();
   const suggestions = query && !query.includes(" ")
@@ -116,15 +134,22 @@ export default function DevConsole() {
     const cmd = raw.trim();
     if (!cmd) return;
     const name = cmd.toLowerCase().split(/\s+/)[0];
-    const def = COMMANDS.find((c) => c.name === name);
-    if (def?.name === "clear") {
+    if (name === "clear") {
       setLines([]);
       return;
     }
     const echo: LogLine = { id: idRef.current++, kind: "echo", text: `>    ${cmd}` };
-    const out: LogLine[] = def
-      ? def.lines().map((text) => ({ id: idRef.current++, kind: "out" as const, text }))
-      : [{ id: idRef.current++, kind: "err", text: `Unknown command "${name}" - type "help"` }];
+    let out: LogLine[];
+    if (BUILTINS.has(name)) {
+      const def = COMMANDS.find((c) => c.name === name)!;
+      out = def.lines().map((text) => ({ id: idRef.current++, kind: "out" as const, text }));
+    } else {
+      const arg = cmd.slice(name.length).trim();
+      const result = runAdminCommand(name, arg, handlersRef.current);
+      out = result
+        ? result.map((r) => ({ id: idRef.current++, kind: (r.error ? "err" : "out") as LineKind, text: r.text }))
+        : [{ id: idRef.current++, kind: "err" as const, text: `Unknown command "${name}" - type "help"` }];
+    }
     setLines((ls) => [...ls, echo, ...out]);
   }, []);
 

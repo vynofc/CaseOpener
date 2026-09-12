@@ -11,6 +11,7 @@ const NAV = [
   { href: "/", label: "Cases" },
   { href: "/upgrade", label: "Upgrade" },
   { href: "/inventar", label: "Inventory" },
+  { href: "/index", label: "Index" },
 ];
 
 export default function Header() {

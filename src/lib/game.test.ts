@@ -3,10 +3,12 @@ import { CASES } from "./cases";
 import {
   buildStrip,
   buildUpgradeItem,
+  getLuckMultiplier,
   pickUpgradeTarget,
   rollDrop,
   rollRarity,
   rollSkin,
+  setLuckMultiplier,
   upgradeChance,
   upgradeTargetPrice,
   UPGRADE_MAX_CHANCE,
@@ -32,6 +34,42 @@ describe("rollRarity", () => {
     }
     for (const [rarity, count] of Object.entries(counts)) {
       if (rarity !== "milspec") expect(counts.milspec).toBeGreaterThan(count);
+    }
+  });
+});
+
+describe("luck multiplier", () => {
+  it("defaults to 1 and rejects invalid values", () => {
+    expect(getLuckMultiplier()).toBe(1);
+    setLuckMultiplier(5);
+    expect(getLuckMultiplier()).toBe(5);
+    setLuckMultiplier(0);
+    expect(getLuckMultiplier()).toBe(1);
+    setLuckMultiplier(Number.NaN);
+    expect(getLuckMultiplier()).toBe(1);
+  });
+
+  it("forces gold on every roll when the multiplier is huge", () => {
+    setLuckMultiplier(10000);
+    try {
+      for (let i = 0; i < 100; i++) {
+        expect(rollRarity()).toBe("rare");
+      }
+    } finally {
+      setLuckMultiplier(1);
+    }
+  });
+
+  it("boosts rare drops noticeably with a moderate multiplier", () => {
+    setLuckMultiplier(20);
+    try {
+      let rares = 0;
+      for (let i = 0; i < 20000; i++) {
+        if (rollRarity() === "rare") rares++;
+      }
+      expect(rares / 20000).toBeGreaterThan(0.03);
+    } finally {
+      setLuckMultiplier(1);
     }
   });
 });
