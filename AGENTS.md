@@ -9,10 +9,11 @@ npm install
 npm run dev      # Next.js dev server on :3000
 npm run build    # production build
 npm run lint     # ESLint 9 flat config (eslint.config.mjs, eslint-config-next)
+npm test         # Vitest unit tests (src/lib/*.test.ts)
 node scripts/generate-cases.mjs   # regenerate src/lib/cases.ts from database.js
 ```
 
-There are **no tests, no CI, no formatter config**. Verify changes with `npm run lint` and `npm run build` (build is the typecheck; `strict: true`, no `tsc` script).
+Verify changes with `npm run lint`, `npm test` and `npm run build` (build is the typecheck; `strict: true`, no `tsc` script). GitHub Actions (`.github/workflows/ci.yml`) runs lint + tests + build on every push to master/main and on PRs; `package-lock.json` is committed so CI can use `npm ci`.
 
 ## Stack
 
@@ -72,3 +73,4 @@ Single route: `src/app/page.tsx` (client component) + `src/app/layout.tsx` (wrap
 
 - `.agents/skills/anti-ui-slop/` contains a locally installed skill for grounding UI work in real reference screens; consult it before large UI redesigns.
 - `public/assets/` contains the intro video and wav files referenced above; the svg files in `public/` root are unused Next.js scaffolding leftovers.
+- `public/assets/img/` holds the UI imagery: `menu-bg.jpg` (full-screen menu backdrop, loaded by `MenuBackdrop` with automatic fallback to the bundled `menu-bg.svg` placeholder) and `cases/<case-id>.png` (real case renders, loaded by `CaseImage` with fallback to the inline-SVG `CaseArt`). See `public/assets/img/README.md` for what to download. Both loaders use the plain-`<img>` + `onError` fallback pattern from `SkinImage`.
