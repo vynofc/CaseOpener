@@ -87,7 +87,12 @@ export default function Roulette({
       <div ref={containerRef} className="w-full overflow-hidden">
         <div ref={trackRef} className="flex gap-2 px-2 will-change-transform" style={{ width: STRIP_LENGTH * CARD_FULL }}>
           {strip.map((item, i) => (
-            <SkinCard key={item.uid + i} item={item} highlight={settled && i === WIN_INDEX} />
+            <SkinCard
+              key={item.uid + i}
+              item={item}
+              highlight={settled && i === WIN_INDEX}
+              mystery={item.skin.rarity === "rare" && !(settled && i === WIN_INDEX)}
+            />
           ))}
         </div>
       </div>

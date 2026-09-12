@@ -5,10 +5,12 @@ export default function SkinCard({
   item,
   size = "md",
   highlight = false,
+  mystery = false,
 }: {
   item: InventoryItem;
   size?: "sm" | "md";
   highlight?: boolean;
+  mystery?: boolean;
 }) {
   const rarity = rarityById(item.skin.rarity);
   const w = size === "sm" ? "w-28 h-24" : "w-36 h-28";
@@ -23,17 +25,34 @@ export default function SkinCard({
         className="absolute inset-x-0 top-0 h-1"
         style={{ background: rarity.color }}
       />
-      {item.stattrak && (
+      {item.stattrak && !mystery && (
         <span className="absolute top-1.5 left-1.5 text-[9px] font-bold text-orange-400 bg-orange-400/10 rounded-sm px-1">
           ST
         </span>
       )}
-      <div className="item-plate absolute inset-x-2 top-4 bottom-7 rounded-sm" />
-      <SkinImage skin={item.skin} eager className="relative w-4/5 h-3/5 object-contain mt-2" />
-      <div className="absolute bottom-1 inset-x-1 text-center leading-tight">
-        <div className="text-[9px] text-zinc-400 truncate">{item.skin.weapon}</div>
-        <div className="text-[10px] font-semibold text-zinc-100 truncate">{item.skin.name}</div>
-      </div>
+      {mystery ? (
+        <>
+          <div className="item-plate absolute inset-x-2 top-4 bottom-7 rounded-sm" />
+          <div className="relative flex-1 flex items-center justify-center text-4xl leading-none" style={{ color: rarity.color }}>
+            ★
+          </div>
+          <div className="absolute bottom-1 inset-x-1 text-center leading-tight">
+            <div className="text-[9px] text-zinc-400 truncate">???</div>
+            <div className="text-[10px] font-semibold truncate" style={{ color: rarity.color }}>
+              Spezial-Item
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="item-plate absolute inset-x-2 top-4 bottom-7 rounded-sm" />
+          <SkinImage skin={item.skin} eager className="relative w-4/5 h-3/5 object-contain mt-2" />
+          <div className="absolute bottom-1 inset-x-1 text-center leading-tight">
+            <div className="text-[9px] text-zinc-400 truncate">{item.skin.weapon}</div>
+            <div className="text-[10px] font-semibold text-zinc-100 truncate">{item.skin.name}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
