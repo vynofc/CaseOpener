@@ -101,6 +101,75 @@ export function buildUpgradeItem(skin: Skin, uid: string): InventoryItem {
   return buildItemFromSkin(skin, "upgrade", uid);
 }
 
+export const TRADE_UP_REQUIREMENTS: Record<RarityId, number> = {
+  milspec: 10,
+  restricted: 10,
+  classified: 10,
+  covert: 5,
+  rare: 0,
+};
+
+export function tradeUpRequirement(rarity: RarityId): number {
+  return TRADE_UP_REQUIREMENTS[rarity];
+}
+
+export function nextRarity(rarity: RarityId): RarityId | null {
+  const order: RarityId[] = ["milspec", "restricted", "classified", "covert", "rare"];
+  const i = order.indexOf(rarity);
+  return i >= 0 && i < order.length - 1 ? order[i + 1] : null;
+}
+
+export function tradeUpOutcomeSkins(inputs: InventoryItem[], cases: CaseData[], allSkins: Skin[]): Skin[] {
+  if (inputs.length === 0) return [];
+  const target = nextRarity(inputs[0].skin.rarity);
+  if (!target) return [];
+  const caseIds = new Set(inputs.map((i) => i.caseId));
+  const pool = new Map<string, Skin>();
+  for (const c of cases) {
+    if (!caseIds.has(c.id)) continue;
+    for (const s of c.skins) {
+      if (s.rarity === target) pool.set(s.id, s);
+    }
+  }
+  if (pool.size === 0) {
+    for (const s of allSkins) {
+      if (s.rarity === target) pool.set(s.id, s);
+    }
+  }
+  return [...pool.values()];
+}
+
+export function rollTradeUp(inputs: InventoryItem[], cases: CaseData[], allSkins: Skin[], uid: string): InventoryItem | null {
+  if (inputs.length === 0) return null;
+  const rarity = inputs[0].skin.rarity;
+  const required = tradeUpRequirement(rarity);
+  if (required === 0 || inputs.length !== required) return null;
+  if (!inputs.every((i) => i.skin.rarity === rarity)) return null;
+  const pool = tradeUpOutcomeSkins(inputs, cases, allSkins);
+  if (pool.length === 0) return null;
+  const skin = pickWeighted(pool);
+  return buildTradeUpItem(skin, uid, inputs.every((i) => i.stattrak));
+}
+
+export function buildTradeUpItem(skin: Skin, uid: string, stattrak: boolean): InventoryItem {
+  const wear = WEARS[Math.floor(Math.random() * WEARS.length)];
+  const floatValue = wear.min + Math.random() * (wear.max - wear.min);
+  const st = stattrak && skin.rarity !== "rare";
+  let price = skin.basePrice * wear.mult;
+  if (st) price *= 1.8;
+  price = Math.max(0.03, price * (0.9 + Math.random() * 0.2));
+  return {
+    uid,
+    skin,
+    caseId: "tradeup",
+    wear,
+    floatValue,
+    stattrak: st,
+    price: Math.round(price * 100) / 100,
+    wonAt: Date.now(),
+  };
+}
+
 export function buildStrip(caseData: CaseData, winner: InventoryItem, length = 80, winIndex = 60): InventoryItem[] {
   const strip: InventoryItem[] = [];
   for (let i = 0; i < length; i++) {

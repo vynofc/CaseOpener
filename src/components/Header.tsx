@@ -10,6 +10,7 @@ import DepositModal from "./DepositModal";
 const NAV = [
   { href: "/", label: "Cases" },
   { href: "/upgrade", label: "Upgrade" },
+  { href: "/tradeup", label: "Trade-Up" },
   { href: "/inventar", label: "Inventory" },
   { href: "/index", label: "Index" },
 ];

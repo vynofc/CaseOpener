@@ -1,19 +1,25 @@
 import { describe, expect, it } from "vitest";
 import { CASES } from "./cases";
 import {
+  buildItemFromSkin,
   buildStrip,
+  buildTradeUpItem,
   buildUpgradeItem,
   getLuckMultiplier,
+  nextRarity,
   pickUpgradeTarget,
   rollDrop,
   rollRarity,
   rollSkin,
+  rollTradeUp,
   setLuckMultiplier,
+  tradeUpOutcomeSkins,
+  tradeUpRequirement,
   upgradeChance,
   upgradeTargetPrice,
   UPGRADE_MAX_CHANCE,
 } from "./game";
-import { RARITIES, Skin, WEARS, formatMoney, rarityById } from "./types";
+import { InventoryItem, RARITIES, RarityId, Skin, WEARS, formatMoney, rarityById } from "./types";
 
 const testCase = CASES[0];
 const allSkins: Skin[] = [...new Map(CASES.flatMap((c) => c.skins).map((s) => [s.id, s])).values()];
@@ -185,6 +191,109 @@ describe("buildUpgradeItem", () => {
     expect(rare).toBeDefined();
     for (let i = 0; i < 100; i++) {
       expect(buildUpgradeItem(rare!, `r-${i}`).stattrak).toBe(false);
+    }
+  });
+});
+
+describe("tradeUpRequirement", () => {
+  it("requires 10 for regular rarities and 5 for covert", () => {
+    expect(tradeUpRequirement("milspec")).toBe(10);
+    expect(tradeUpRequirement("restricted")).toBe(10);
+    expect(tradeUpRequirement("classified")).toBe(10);
+    expect(tradeUpRequirement("covert")).toBe(5);
+    expect(tradeUpRequirement("rare")).toBe(0);
+  });
+});
+
+describe("nextRarity", () => {
+  it("walks the rarity ladder and stops at rare", () => {
+    expect(nextRarity("milspec")).toBe("restricted");
+    expect(nextRarity("restricted")).toBe("classified");
+    expect(nextRarity("classified")).toBe("covert");
+    expect(nextRarity("covert")).toBe("rare");
+    expect(nextRarity("rare")).toBeNull();
+  });
+});
+
+function makeInputs(rarity: RarityId, count: number, stattrak = false): InventoryItem[] {
+  const skin = allSkins.find((s) => s.rarity === rarity)!;
+  return Array.from({ length: count }, (_, i) => {
+    const item = buildItemFromSkin(skin, testCase.id, `in-${rarity}-${i}`);
+    return { ...item, stattrak };
+  });
+}
+
+describe("tradeUpOutcomeSkins", () => {
+  it("pools next-rarity skins from the input cases", () => {
+    const inputs = makeInputs("milspec", 10);
+    const pool = tradeUpOutcomeSkins(inputs, CASES, allSkins);
+    expect(pool.length).toBeGreaterThan(0);
+    expect(pool.every((s) => s.rarity === "restricted")).toBe(true);
+  });
+
+  it("offers rare special skins for covert inputs", () => {
+    const inputs = makeInputs("covert", 5);
+    const pool = tradeUpOutcomeSkins(inputs, CASES, allSkins);
+    expect(pool.length).toBeGreaterThan(0);
+    expect(pool.every((s) => s.rarity === "rare")).toBe(true);
+  });
+
+  it("falls back to the global pool when the case has no matching skins", () => {
+    const inputs = makeInputs("classified", 10).map((i) => ({ ...i, caseId: "unknown-case" }));
+    const pool = tradeUpOutcomeSkins(inputs, CASES, allSkins);
+    expect(pool.length).toBeGreaterThan(0);
+    expect(pool.every((s) => s.rarity === "covert")).toBe(true);
+  });
+});
+
+describe("rollTradeUp", () => {
+  it("turns 10 milspec into 1 restricted", () => {
+    for (let i = 0; i < 50; i++) {
+      const result = rollTradeUp(makeInputs("milspec", 10), CASES, allSkins, `tu-${i}`);
+      expect(result).not.toBeNull();
+      expect(result!.uid).toBe(`tu-${i}`);
+      expect(result!.skin.rarity).toBe("restricted");
+      expect(result!.caseId).toBe("tradeup");
+      expect(result!.price).toBeGreaterThanOrEqual(0.03);
+    }
+  });
+
+  it("turns 5 covert into 1 rare special", () => {
+    const result = rollTradeUp(makeInputs("covert", 5), CASES, allSkins, "tu-gold");
+    expect(result).not.toBeNull();
+    expect(result!.skin.rarity).toBe("rare");
+    expect(result!.stattrak).toBe(false);
+  });
+
+  it("rejects wrong counts, mixed rarities and rare inputs", () => {
+    expect(rollTradeUp(makeInputs("milspec", 9), CASES, allSkins, "x")).toBeNull();
+    expect(rollTradeUp(makeInputs("covert", 10), CASES, allSkins, "x")).toBeNull();
+    expect(rollTradeUp([...makeInputs("milspec", 9), ...makeInputs("restricted", 1)], CASES, allSkins, "x")).toBeNull();
+    expect(rollTradeUp(makeInputs("rare", 10), CASES, allSkins, "x")).toBeNull();
+    expect(rollTradeUp([], CASES, allSkins, "x")).toBeNull();
+  });
+
+  it("keeps StatTrak only when every input has it", () => {
+    for (let i = 0; i < 20; i++) {
+      const all = rollTradeUp(makeInputs("classified", 10, true), CASES, allSkins, `st-${i}`);
+      expect(all!.stattrak).toBe(true);
+      const mixed = makeInputs("classified", 10, true);
+      mixed[3] = { ...mixed[3], stattrak: false };
+      const partial = rollTradeUp(mixed, CASES, allSkins, `st-m-${i}`);
+      expect(partial!.stattrak).toBe(false);
+    }
+  });
+});
+
+describe("buildTradeUpItem", () => {
+  it("never makes rare skins StatTrak and tags the caseId", () => {
+    const rare = allSkins.find((s) => s.rarity === "rare")!;
+    for (let i = 0; i < 50; i++) {
+      const item = buildTradeUpItem(rare, `b-${i}`, true);
+      expect(item.stattrak).toBe(false);
+      expect(item.caseId).toBe("tradeup");
+      expect(item.floatValue).toBeGreaterThanOrEqual(item.wear.min);
+      expect(item.floatValue).toBeLessThanOrEqual(item.wear.max);
     }
   });
 });
