@@ -15,14 +15,15 @@ export default function CaseImage({
   eager?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
+  const src = caseImagePath(caseData.id);
 
-  if (failed) {
+  if (!src || failed) {
     return <CaseArt gradient={caseData.gradient} accent={caseData.accent} className={className} />;
   }
 
   return (
     <img
-      src={caseImagePath(caseData.id)}
+      src={src}
       alt={caseData.name}
       className={className}
       loading={eager ? "eager" : "lazy"}

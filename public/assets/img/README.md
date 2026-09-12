@@ -20,12 +20,10 @@ Hauptmenue oder eine Map wie Mirage/Dust2 bei Sonnenuntergang).
 
 **Ordner:** `public/assets/img/cases/`
 
-**Dateiname:** `<case-id>.png` (siehe Liste unten), z. B.
-`public/assets/img/cases/kilowatt_case.png`
-
-Gesucht: die offiziellen Kisten-Render (transparente PNGs, ~512x384).
-Quellen: Steam Community Market (Bild der jeweiligen Kiste speichern) oder
-csgodatabase.com / bymykel.github.io (counter-strike-image-tracker).
+**Status: vollstaendig** — alle 42 Kisten-Bilder liegen bereits als WebP vor
+(Quelle: csgodatabase.com). Das Mapping Case-ID -> Dateiname steht in
+`src/lib/case-images.ts` (Dateinamen entsprechen NICHT immer der Case-ID,
+z. B. `Dreams_&_Nightmares_Case.webp`, `CS_GO_Weapon_Case.webp`).
 
 Fehlende Kisten zeigen automatisch die eingebaute SVG-Grafik.
 
