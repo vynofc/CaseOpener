@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #0b0e14;
+  --foreground: #e8eaf0;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1119;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a3040;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4155;
+}
+
+.case-row {
+  scrollbar-width: thin;
+}
+
+/* Winner card highlight pulse */
+@keyframes highlight-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.06);
+    filter: brightness(1.35);
+  }
+}
+.skin-highlight {
+  animation: highlight-pulse 0.6s ease-in-out 3;
+  z-index: 5;
+  box-shadow: 0 0 24px 2px rgba(255, 213, 74, 0.45);
+}
+
+/* Win modal entrance */
+@keyframes win-pop-in {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.win-pop {
+  animation: win-pop-in 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+/* Slow radial shine rotation in win modal */
+@keyframes win-shine-pulse {
+  0%, 100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.win-shine {
+  animation: win-shine-pulse 2.2s ease-in-out infinite;
+}
+
+/* Case card sheen sweep on hover */
+.case-sheen {
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.14) 48%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+button:hover .case-sheen {
+  transform: translateX(120%);
+}
+
+/* Settled pointer glow */
+@keyframes pointer-won-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+.pointer-won {
+  animation: pointer-won-glow 0.5s ease-in-out infinite;
+}
