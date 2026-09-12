@@ -8,7 +8,6 @@ import { useGame } from "@/lib/game-context";
 import { playOpen, playClick } from "@/lib/audio";
 import Header from "@/components/Header";
 import MenuBackdrop from "@/components/MenuBackdrop";
-import LiveDrops from "@/components/LiveDrops";
 import CaseCard from "@/components/CaseCard";
 import CaseImage from "@/components/CaseImage";
 import CaseContents from "@/components/CaseContents";
@@ -80,8 +79,6 @@ export default function Home() {
       <MenuBackdrop />
       <Header />
       <main className="relative z-10 mx-auto w-full max-w-7xl px-4 py-6 flex flex-col gap-6">
-        <LiveDrops />
-
         <section id="cases" className="scroll-mt-20">
           <div className="flex items-end justify-between mb-3">
             <h1 className="panel-heading">Behälter auswählen</h1>

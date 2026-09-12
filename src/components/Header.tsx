@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useGame } from "@/lib/game-context";
 import { formatMoney } from "@/lib/types";
 import { playClick } from "@/lib/audio";
@@ -14,18 +13,6 @@ const NAV = [
 
 export default function Header() {
   const { balance, addFunds, soundOn, toggleSound, hydrated } = useGame();
-  const [online, setOnline] = useState(0);
-
-  useEffect(() => {
-    const init = setTimeout(() => setOnline(1800 + Math.floor(Math.random() * 900)), 0);
-    const timer = setInterval(() => {
-      setOnline((v) => Math.max(1200, v + Math.floor(Math.random() * 41) - 20));
-    }, 5000);
-    return () => {
-      clearTimeout(init);
-      clearInterval(timer);
-    };
-  }, []);
 
   return (
     <header
@@ -60,12 +47,6 @@ export default function Header() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2.5">
-          <div className="hidden lg:flex items-center gap-2 rounded-sm bg-black/35 px-2.5 py-1.5">
-            <span className="live-dot inline-block w-1.5 h-1.5 rounded-full bg-cs-green" />
-            <span className="text-xs font-semibold text-white/70 tabular-nums">
-              {online > 0 ? online.toLocaleString("de-DE") : "…"} online
-            </span>
-          </div>
           <button
             onClick={toggleSound}
             className="rounded-sm border border-white/15 hover:border-white/35 hover:bg-white/5 p-2 text-zinc-300 transition cursor-pointer"
