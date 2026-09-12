@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Oswald, Sofia_Sans } from "next/font/google";
 import "./globals.css";
 import { GameProvider } from "@/lib/game-context";
+import DevConsole from "@/components/DevConsole";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -30,7 +31,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${oswald.variable} ${sofiaSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col">
-        <GameProvider>{children}</GameProvider>
+        <GameProvider>
+          {children}
+          <DevConsole />
+        </GameProvider>
       </body>
     </html>
   );
