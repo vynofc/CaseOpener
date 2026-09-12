@@ -1,12 +1,3 @@
-/**
- * CS2 Drop Overlay
- * @author LuciusFKR
- * @copyright Copyright (c) 2026 LuciusFKR
- * @license CC BY-NC 4.0
- * * This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
- * You are free to share and adapt the material, provided you give appropriate credit
- * and DO NOT use the material for commercial purposes.
- */
 
 
 // SKIN DATABASE SORTED BY CASES
