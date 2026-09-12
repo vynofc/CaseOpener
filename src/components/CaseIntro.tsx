@@ -29,7 +29,7 @@ export default function CaseIntro({ onDone }: { onDone: () => void }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4">
       <video
         ref={videoRef}
-        src="/assets/opening.mp4"
+        src="/assets/video/opening.mp4"
         className="max-h-[80vh] max-w-full rounded-xl shadow-2xl"
         playsInline
         preload="auto"

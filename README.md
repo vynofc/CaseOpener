@@ -5,7 +5,7 @@ Ein vollständiger CS2-Case-Opener als Next.js-App mit echten Case-Daten, Öffnu
 ## Features
 
 - **42 echte Cases** (Kilowatt, Revolution, Chroma, Operation Bravo, ...) mit den original Skins und Bildern
-- **Öffnungs-Cinematic** (`public/assets/opening.mp4`) vor jedem Spin, überspringbar
+- **Öffnungs-Cinematic** (`public/assets/video/opening.mp4`) vor jedem Spin, überspringbar
 - **Roulette-Animation** mit 80 Karten, physikalischem Abbremsen, Tick-Sounds und Gewinner-Highlight
 - **Echte Drop-Chancen**: Mil-Spec 79,92 %, Restricted 15,98 %, Classified 3,2 %, Covert 0,64 %, Rare Special 0,26 %
 - **Messer & Handschuhe** als Rare Specials (0,26 %) pro Case

@@ -37,7 +37,7 @@ Single route: `src/app/page.tsx` (client component) + `src/app/layout.tsx` (wrap
 `idle -> opening -> spinning -> result -> idle`
 
 1. `openCase()` deducts the price, then **rolls the winner immediately** via `rollDrop()` in `src/lib/game.ts`. The outcome is decided *before* any animation.
-2. `CaseIntro` plays `public/assets/opening.mp4` fullscreen (skippable; calls `onDone` on end, skip, or playback failure).
+2. `CaseIntro` plays `public/assets/video/opening.mp4` fullscreen (skippable; calls `onDone` on end, skip, or playback failure).
 3. `Roulette` builds an 80-card strip via `buildStrip()` with the pre-rolled winner forced at index 60, then animates a `translateX` with `requestAnimationFrame` + `easeOutQuint` (~6.2s) so the winner lands under the center pointer. It is purely presentational.
 4. `WinModal` offers keep / sell / open-again; "again" chains back into `openCase()` via `setTimeout`.
 
