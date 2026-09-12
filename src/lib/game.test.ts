@@ -1,9 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { CASES } from "./cases";
-import { buildStrip, buildUpgradeItem, rollDrop, rollRarity, rollSkin, upgradeChance, UPGRADE_MAX_CHANCE } from "./game";
-import { RARITIES, WEARS, formatMoney, rarityById } from "./types";
+import {
+  buildStrip,
+  buildUpgradeItem,
+  pickUpgradeTarget,
+  rollDrop,
+  rollRarity,
+  rollSkin,
+  upgradeChance,
+  upgradeTargetPrice,
+  UPGRADE_MAX_CHANCE,
+} from "./game";
+import { RARITIES, Skin, WEARS, formatMoney, rarityById } from "./types";
 
 const testCase = CASES[0];
+const allSkins: Skin[] = [...new Map(CASES.flatMap((c) => c.skins).map((s) => [s.id, s])).values()];
 
 describe("rollRarity", () => {
   it("returns only known rarities across many rolls", () => {
@@ -77,6 +88,43 @@ describe("upgradeChance", () => {
     expect(upgradeChance(100, 10)).toBe(UPGRADE_MAX_CHANCE);
     expect(upgradeChance(0, 10)).toBe(0);
     expect(upgradeChance(10, 0)).toBe(0);
+  });
+});
+
+describe("upgradeTargetPrice", () => {
+  it("inverts upgradeChance", () => {
+    for (const chance of [0.5, 0.3, 0.1, 0.05, 0.01]) {
+      const price = upgradeTargetPrice(10, chance);
+      expect(upgradeChance(10, price)).toBeCloseTo(chance, 5);
+    }
+  });
+
+  it("handles invalid input", () => {
+    expect(upgradeTargetPrice(0, 0.5)).toBe(0);
+    expect(upgradeTargetPrice(10, 0)).toBe(0);
+  });
+});
+
+describe("pickUpgradeTarget", () => {
+  it("always picks a skin worth more than the stake", () => {
+    for (let i = 0; i < 200; i++) {
+      const skin = pickUpgradeTarget(allSkins, 5, 0.3);
+      expect(skin).not.toBeNull();
+      expect(skin!.basePrice).toBeGreaterThan(5);
+    }
+  });
+
+  it("picks skins near the ideal target price", () => {
+    for (let i = 0; i < 200; i++) {
+      const ideal = upgradeTargetPrice(10, 0.1);
+      const skin = pickUpgradeTarget(allSkins, 10, 0.1)!;
+      expect(Math.abs(skin.basePrice - ideal) / ideal).toBeLessThan(0.5);
+    }
+  });
+
+  it("returns null when no skin beats the stake", () => {
+    expect(pickUpgradeTarget(allSkins, Number.MAX_VALUE, 0.5)).toBeNull();
+    expect(pickUpgradeTarget([], 5, 0.5)).toBeNull();
   });
 });
 

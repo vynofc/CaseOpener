@@ -98,6 +98,35 @@ body {
   cursor: not-allowed;
 }
 
+/* upgrader.pro style gold CTA: bright gold gradient, dark text */
+.btn-gold {
+  border: 1px solid #fbd506;
+  background: linear-gradient(180deg, #fbd506 0%, #b99500 100%);
+  color: #171404;
+  box-shadow:
+    0 10px 28px rgba(251, 213, 6, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  transition: filter 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+.btn-gold:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+.btn-gold:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn-gold:disabled {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: #4b4b4f;
+  color: rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
 /* Light gradient plate behind item images (like Steam/caser item tiles) */
 .item-plate {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);

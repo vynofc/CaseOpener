@@ -66,6 +66,22 @@ export function rollUpgradeWin(chance: number): boolean {
   return Math.random() < chance;
 }
 
+export function upgradeTargetPrice(stakePrice: number, chance: number): number {
+  if (stakePrice <= 0 || chance <= 0) return 0;
+  return (stakePrice * UPGRADE_HOUSE_EDGE) / Math.min(chance, UPGRADE_MAX_CHANCE);
+}
+
+export function pickUpgradeTarget(skins: Skin[], stakePrice: number, chance: number, poolSize = 8): Skin | null {
+  const ideal = upgradeTargetPrice(stakePrice, chance);
+  if (ideal <= 0) return null;
+  const candidates = skins
+    .filter((s) => s.basePrice > stakePrice)
+    .sort((a, b) => Math.abs(a.basePrice - ideal) - Math.abs(b.basePrice - ideal));
+  if (candidates.length === 0) return null;
+  const pool = candidates.slice(0, Math.max(1, poolSize));
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
 export function buildUpgradeItem(skin: Skin, uid: string): InventoryItem {
   return rollItemFromSkin(skin, "upgrade", uid);
 }
