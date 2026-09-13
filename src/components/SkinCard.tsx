@@ -3,56 +3,49 @@ import SkinImage from "./SkinImage";
 
 export default function SkinCard({
   item,
-  size = "md",
   highlight = false,
   mystery = false,
+  dimmed = false,
 }: {
   item: InventoryItem;
-  size?: "sm" | "md";
   highlight?: boolean;
   mystery?: boolean;
+  dimmed?: boolean;
 }) {
   const rarity = rarityById(item.skin.rarity);
-  const w = size === "sm" ? "w-28 h-24" : "w-36 h-28";
   return (
     <div
-      className={`relative ${w} shrink-0 rounded-sm border bg-cs-900/90 overflow-hidden flex flex-col items-center justify-center transition-transform ${
-        highlight ? "skin-highlight" : ""
+      className={`relative h-[200px] w-[160px] shrink-0 overflow-hidden rounded-[4px] transition-all duration-500 ${
+        highlight ? "z-10 scale-[1.08]" : ""
       }`}
-      style={{ borderColor: rarity.color + "66" }}
+      style={{
+        background: `linear-gradient(180deg, ${rarity.color}33 0%, #171a21 45%, #0f1116 100%)`,
+        boxShadow: highlight
+          ? `0 0 46px 4px ${rarity.color}a6, inset 0 0 0 1px ${rarity.color}`
+          : "inset 0 0 0 1px rgba(255,255,255,0.07)",
+        opacity: dimmed ? 0.35 : 1,
+      }}
     >
-      <div
-        className="absolute inset-x-0 top-0 h-1"
-        style={{ background: rarity.color }}
-      />
       {item.stattrak && !mystery && (
-        <span className="absolute top-1.5 left-1.5 text-[9px] font-bold text-orange-400 bg-orange-400/10 rounded-sm px-1">
-          ST
+        <span className="absolute top-2 left-2 text-[9px] font-bold text-orange-400/90">
+          ST™
         </span>
       )}
       {mystery ? (
-        <>
-          <div className="item-plate absolute inset-x-2 top-4 bottom-7 rounded-sm" />
-          <div className="relative flex-1 flex items-center justify-center text-4xl leading-none" style={{ color: rarity.color }}>
-            ★
-          </div>
-          <div className="absolute bottom-1 inset-x-1 text-center leading-tight">
-            <div className="text-[9px] text-zinc-400 truncate">???</div>
-            <div className="text-[10px] font-semibold truncate" style={{ color: rarity.color }}>
-              Spezial-Item
-            </div>
-          </div>
-        </>
+        <div className="flex h-full items-center justify-center text-5xl leading-none" style={{ color: rarity.color }}>
+          ★
+        </div>
       ) : (
-        <>
-          <div className="item-plate absolute inset-x-2 top-4 bottom-7 rounded-sm" />
-          <SkinImage skin={item.skin} eager className="relative w-4/5 h-3/5 object-contain mt-2" />
-          <div className="absolute bottom-1 inset-x-1 text-center leading-tight">
-            <div className="text-[9px] text-zinc-400 truncate">{item.skin.weapon}</div>
-            <div className="text-[10px] font-semibold text-zinc-100 truncate">{item.skin.name}</div>
-          </div>
-        </>
+        <SkinImage
+          skin={item.skin}
+          eager
+          className="absolute inset-0 m-auto h-[120px] w-[136px] object-contain drop-shadow-[0_12px_18px_rgba(0,0,0,0.65)]"
+        />
       )}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[5px]"
+        style={{ background: rarity.color, boxShadow: `0 0 14px 1px ${rarity.color}` }}
+      />
     </div>
   );
 }

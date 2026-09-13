@@ -58,11 +58,15 @@ export default function WinModal({
           <div className="text-xs uppercase tracking-widest font-bold" style={{ color: rarity.color }}>
             {rarity.name}
           </div>
-          <div className="my-4 rounded-sm p-4 bg-cs-950" style={{ boxShadow: `inset 0 0 40px ${rarity.color}22` }}>
-          <SkinImage skin={item.skin} className="w-56 h-40 object-contain mx-auto drop-shadow-lg" />
+          <div className="my-4 rounded-sm p-4 bg-cs-950" style={{ boxShadow: `inset 0 0 60px ${rarity.color}44` }}>
+          <SkinImage skin={item.skin} className="w-64 h-44 object-contain mx-auto drop-shadow-[0_14px_24px_rgba(0,0,0,0.7)]" />
           </div>
           <div className="text-sm text-zinc-400">{item.skin.weapon}</div>
-          <div className="text-2xl font-extrabold text-white uppercase tracking-wide">
+          <div
+            className="text-2xl font-extrabold uppercase tracking-wide"
+            style={{ color: rarity.color, textShadow: `0 0 24px ${rarity.color}66` }}
+          >
+            {item.skin.rarity === "rare" && <span className="mr-1">★</span>}
             {item.stattrak && <span className="text-orange-400">StatTrak™ </span>}
             {item.skin.name}
           </div>

@@ -85,13 +85,16 @@ export default function Home() {
       if (e.code === "Space") {
         if (target && target.closest("button, a[href]")) return;
         e.preventDefault();
+        if ((phase === "opening" || phase === "spinning") && winner) {
+          setPhase("result");
+        }
       } else if (e.key.toLowerCase() === "r" && phase === "idle") {
         openCaseRef.current();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase]);
+  }, [phase, winner]);
 
   return (
     <div className="min-h-full flex flex-col">
@@ -127,41 +130,41 @@ export default function Home() {
             <span className="text-xs font-bold text-cs-gold tabular-nums">{formatMoney(selected.price)}</span>
           </div>
 
-          {(phase === "spinning" || phase === "result") && winner ? (
-            <div className="p-4">
-              <Roulette caseData={selected} winner={winner} onDone={handleSettled} />
+          <div className="relative flex flex-col items-center gap-6 px-6 py-10">
+            <div
+              className="pointer-events-none absolute inset-0 opacity-40"
+              style={{ background: `radial-gradient(ellipse 50% 60% at 50% 45%, ${selected.accent}30, transparent 70%)` }}
+            />
+            <div className="relative">
+              <CaseImage caseData={selected} eager className="w-56 sm:w-64 h-auto drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]" />
             </div>
-          ) : (
-            <div className="relative flex flex-col items-center gap-6 px-6 py-10">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-40"
-                style={{ background: `radial-gradient(ellipse 50% 60% at 50% 45%, ${selected.accent}30, transparent 70%)` }}
-              />
-              <div className="relative">
-                <CaseImage caseData={selected} eager className="w-56 sm:w-64 h-auto drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]" />
-              </div>
-              <div className="relative text-center">
-                <div className="font-display text-2xl font-medium uppercase tracking-[0.1em] text-white">{selected.name}</div>
-                <div className="text-xs text-zinc-400 mt-0.5">Case · {selected.skins.length} possible items</div>
-              </div>
-              <button
-                onClick={openCase}
-                disabled={phase !== "idle" || !affordable}
-                className="btn-primary relative px-10 py-3.5 text-sm"
-              >
-                Open case · {formatMoney(selected.price)} <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">R</kbd>
-              </button>
-              {!affordable && phase === "idle" && hydrated && (
-                <p className="relative text-xs text-red-400 -mt-3">Not enough balance. Click &quot;Deposit&quot; above to add funds.</p>
-              )}
+            <div className="relative text-center">
+              <div className="font-display text-2xl font-medium uppercase tracking-[0.1em] text-white">{selected.name}</div>
+              <div className="text-xs text-zinc-400 mt-0.5">Case · {selected.skins.length} possible items</div>
             </div>
-          )}
+            <button
+              onClick={openCase}
+              disabled={phase !== "idle" || !affordable}
+              className="btn-primary relative px-10 py-3.5 text-sm"
+            >
+              Open case · {formatMoney(selected.price)} <kbd className="ml-1 rounded-sm border border-white/25 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold">R</kbd>
+            </button>
+            {!affordable && phase === "idle" && hydrated && (
+              <p className="relative text-xs text-red-400 -mt-3">Not enough balance. Click &quot;Deposit&quot; above to add funds.</p>
+            )}
+          </div>
         </section>
 
         <CaseContents caseData={selected} />
       </main>
 
-      {phase === "opening" && <CaseIntro onDone={handleIntroDone} />}
+      {(phase === "opening" || phase === "spinning" || phase === "result") && (
+        <CaseIntro onDone={handleIntroDone}>
+          {phase !== "opening" && winner && (
+            <Roulette caseData={selected} winner={winner} onDone={handleSettled} />
+          )}
+        </CaseIntro>
+      )}
 
       {phase === "result" && winner && (
         <WinModal

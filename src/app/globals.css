@@ -150,6 +150,21 @@ body {
   box-shadow: 0 0 24px 2px rgba(255, 213, 74, 0.45);
 }
 
+/* Roulette overlay rising in over the frozen intro frame */
+@keyframes overlay-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.overlay-rise {
+  animation: overlay-rise-in 0.45s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
 /* Win modal entrance */
 @keyframes win-pop-in {
   0% {
