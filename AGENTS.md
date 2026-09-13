@@ -17,7 +17,7 @@ Verify changes with `npm run lint`, `npm test` and `npm run build` (build is the
 
 ## Stack
 
-- Next.js **16.3.5** (App Router), React **19.2.8**, TypeScript 5.
+- Next.js **16.3.5** (App Router), React **19.3**, TypeScript **6** (TS 7 breaks typescript-eslint inside eslint-config-next; ESLint stays on 9 because the bundled eslint-plugin-react is incompatible with ESLint 10).
 - Tailwind CSS **v4** via `@tailwindcss/postcss`. There is no `tailwind.config`; theme customization lives in `src/app/globals.css` (`@import "tailwindcss"` + `@theme inline`). Custom animations (`.win-pop`, `.skin-highlight`, `.case-sheen`, `.pointer-won`) are hand-written keyframes in `globals.css`, referenced by class name from components.
 - Path alias `@/*` -> `src/*` (tsconfig).
 - No backend, no API routes, no server data fetching. Everything runs client-side; persistence is `localStorage` only.
