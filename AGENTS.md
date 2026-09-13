@@ -9,7 +9,7 @@ npm install
 npm run dev      # Next.js dev server on :3000
 npm run build    # production build
 npm run lint     # ESLint 9 flat config (eslint.config.mjs, eslint-config-next)
-npm test         # Vitest unit tests (src/lib/*.test.ts)
+npm test         # Vitest: unit tests (src/lib/*.test.ts) + component tests (src/app/*.test.tsx, jsdom)
 node scripts/generate-cases.mjs   # regenerate src/lib/cases.ts from data/database.js
 ```
 
